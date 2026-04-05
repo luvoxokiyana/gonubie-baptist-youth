@@ -21,9 +21,19 @@ if (!$conn) {
 }
 
 function getUserIP() {
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) return $_SERVER['HTTP_CLIENT_IP'];
-    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) return $_SERVER['HTTP_X_FORWARDED_FOR'];
-    return $_SERVER['REMOTE_ADDR'];
+    // Priority 1: Cloudflare (InfinityFree uses this)
+    if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+        return $_SERVER['HTTP_CF_CONNECTING_IP'];
+    }
+    
+    // Priority 2: Forwarded by proxy
+    if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($ips[0]); // First IP is the real visitor
+    }
+    
+    // Priority 3: Direct IP (fallback)
+    return $_SERVER['REMOTE_ADDR'] ?? '';
 }
 
 $user_ip = getUserIP();
