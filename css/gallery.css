@@ -19,9 +19,7 @@
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #e8e4d9;
-  transition:
-    transform 0.2s,
-    border-color 0.2s;
+  transition: transform 0.2s, border-color 0.2s;
   break-inside: avoid;
   position: relative;
 }
@@ -97,18 +95,9 @@
   gap: 1rem;
 }
 
-.gallery-header h2 {
-  color: #2c2b28;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
 .upload-btn {
-  background: #c9772e;
-  color: white;
+  background: #c9772e !important;
+  color: white !important;
   border: none;
   padding: 0.7rem 1.5rem;
   border-radius: 50px;
@@ -121,7 +110,7 @@
 }
 
 .upload-btn:hover {
-  background: #b15f1e;
+  background: #b15f1e !important;
   transform: scale(1.02);
 }
 
