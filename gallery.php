@@ -31,13 +31,13 @@
             <div class="masonry-grid" id="masonryGrid">
                 <div class="loading">Loading memories...</div>
             </div>
-            <button id="LoadMoretbn" class="load-more-btn hidden">Load more Photos</button>
+            <button id="loadMoreBtn" class="load-more-btn hidden">Load More Photos</button>
         </div>
     </div>
 
     <!---Light Modal for full size-img--->
     <div id="lightbox" class="lightbox">
-        <spa class="lightbox-close">&times;</span>
+        <span class="lightbox-close">&times;</span>
         <img id="lightbox-img" src="" alt="Full img size">
     </div>
 
