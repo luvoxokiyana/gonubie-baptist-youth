@@ -1,10 +1,10 @@
 <?php
 // database.php - Database connection and setup
 class Database {
-    private $host = 'localhost';
+    private $host = 'sql100.infinityfree.com';
     private $db_name = 'church_youth';
-    private $username = 'root';
-    private $password = '';
+    private $username = 'if0_41572398';
+    private $password = 'GuyGam3r20';
     private $conn;
 
     public function getConnection() {
