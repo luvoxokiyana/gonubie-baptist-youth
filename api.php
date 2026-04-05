@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
@@ -36,7 +37,19 @@ function getUserIP() {
     return $_SERVER['REMOTE_ADDR'] ?? '';
 }
 
-$user_ip = getUserIP();
+// Create a unique device fingerprint (IP + Browser)
+function getDeviceFingerprint() {
+    $ip = getUserIP();
+    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    // Add screen resolution if available (from JavaScript)
+    $screen = $_POST['screen_resolution'] ?? '';
+    
+    // Combine everything for a unique device ID
+    return md5($ip . $userAgent . $screen);
+}
+
+// Use device fingerprint instead of just IP
+$device_id = getDeviceFingerprint();
 $action = $_GET['action'] ?? '';
 
 try {
@@ -44,12 +57,12 @@ try {
         case 'get_votes':
             $pollType = $_GET['poll'] ?? '';
             if ($pollType) {
-                $data = getPollData($conn, $pollType, $user_ip);
+                $data = getPollData($conn, $pollType, $device_id);
                 echo json_encode(['success' => true, 'data' => $data]);
             } else {
                 $result = [];
                 foreach (['bible', 'game', 'event'] as $type) {
-                    $result[$type] = getPollData($conn, $type, $user_ip);
+                    $result[$type] = getPollData($conn, $type, $device_id);
                 }
                 echo json_encode(['success' => true, 'data' => $result]);
             }
@@ -65,7 +78,7 @@ try {
                 break;
             }
             
-            $result = castVote($conn, $pollType, $optionId, $user_ip);
+            $result = castVote($conn, $pollType, $optionId, $device_id);
             echo json_encode($result);
             break;
 
@@ -86,7 +99,7 @@ try {
             }
             
             $stmt = $conn->prepare("INSERT INTO suggestions (suggestion_text, user_ip) VALUES (?, ?)");
-            $stmt->execute([$text, $user_ip]);
+            $stmt->execute([$text, $device_id]);
             echo json_encode(['success' => true, 'message' => 'Suggestion added!']);
             break;
 
@@ -97,7 +110,7 @@ try {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
-function getPollData($conn, $pollType, $user_ip) {
+function getPollData($conn, $pollType, $device_id) {
     $stmt = $conn->prepare("
         SELECT po.option_id, po.option_name, COUNT(v.id) as votes
         FROM poll_options po
@@ -110,7 +123,7 @@ function getPollData($conn, $pollType, $user_ip) {
     $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     $stmt = $conn->prepare("SELECT voted_option_id FROM user_vote_status WHERE user_ip = ? AND poll_type = ?");
-    $stmt->execute([$user_ip, $pollType]);
+    $stmt->execute([$device_id, $pollType]);
     $userVote = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return [
@@ -120,9 +133,9 @@ function getPollData($conn, $pollType, $user_ip) {
     ];
 }
 
-function castVote($conn, $pollType, $optionId, $user_ip) {
+function castVote($conn, $pollType, $optionId, $device_id) {
     $stmt = $conn->prepare("SELECT id FROM user_vote_status WHERE user_ip = ? AND poll_type = ?");
-    $stmt->execute([$user_ip, $pollType]);
+    $stmt->execute([$device_id, $pollType]);
     if ($stmt->fetch()) {
         return ['success' => false, 'error' => 'You have already voted on this poll'];
     }
@@ -136,10 +149,10 @@ function castVote($conn, $pollType, $optionId, $user_ip) {
     $conn->beginTransaction();
     try {
         $stmt = $conn->prepare("INSERT INTO votes (poll_type, option_id, user_ip) VALUES (?, ?, ?)");
-        $stmt->execute([$pollType, $optionId, $user_ip]);
+        $stmt->execute([$pollType, $optionId, $device_id]);
         
         $stmt = $conn->prepare("INSERT INTO user_vote_status (user_ip, poll_type, voted_option_id) VALUES (?, ?, ?)");
-        $stmt->execute([$user_ip, $pollType, $optionId]);
+        $stmt->execute([$device_id, $pollType, $optionId]);
         
         $conn->commit();
         return ['success' => true, 'message' => 'Vote recorded!'];
