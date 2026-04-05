@@ -1,4 +1,4 @@
-/* Homepage only styles */
+/* Homepage only styles - LIGHT MODE */
 
 /* Hero Section */
 .landing-page {
@@ -19,7 +19,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.55);
 }
 
 .wrapper {
@@ -42,7 +42,7 @@
 
 /* Welcome Section */
 .welcome-section {
-    background-color: #0d1117;
+    background-color: #faf8f2;
     text-align: center;
 }
 
@@ -50,7 +50,7 @@
 .friday-section h2, 
 .events-section h2, 
 .join-section h2 {
-    color: #e6edf3;
+    color: #2c2b28;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -62,7 +62,7 @@
 .friday-section h2 i, 
 .events-section h2 i, 
 .join-section h2 i {
-    color: #1a5c3a;
+    color: #c9772e;
 }
 
 .features {
@@ -77,30 +77,35 @@
     flex: 1;
     min-width: 200px;
     padding: 1.5rem;
-    background: #161b22;
+    background: #ffffff;
     border-radius: 16px;
     transition: transform 0.2s;
-    border: 1px solid #21262d;
+    border: 1px solid #e8e4d9;
 }
 
 .feature:hover {
     transform: translateY(-5px);
-    border-color: #1a5c3a;
+    border-color: #c9772e;
 }
 
 .feature i {
     font-size: 2rem;
-    color: #1a5c3a;
+    color: #c9772e;
     margin-bottom: 0.5rem;
 }
 
 .feature h3 {
     margin-bottom: 0.5rem;
+    color: #2c2b28;
+}
+
+.feature p {
+    color: #6b6a66;
 }
 
 /* Friday Section */
 .friday-section {
-    background-color: #0a0f14;
+    background-color: #f0ede5;
 }
 
 .friday-grid {
@@ -111,27 +116,32 @@
 
 .friday-card {
     flex: 1;
-    background: #161b22;
+    background: #ffffff;
     padding: 1.5rem;
     border-radius: 16px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    border-bottom: 3px solid #0f4a2f;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border-bottom: 3px solid #c9772e;
 }
 
 .friday-card i {
     font-size: 2rem;
-    color: #1a5c3a;
+    color: #c9772e;
     margin-bottom: 0.5rem;
 }
 
 .friday-card h3 {
     margin-bottom: 0.5rem;
+    color: #2c2b28;
+}
+
+.friday-card p {
+    color: #6b6a66;
 }
 
 /* Events Section */
 .events-section {
-    background-color: #0d1117;
+    background-color: #faf8f2;
 }
 
 .events-list {
@@ -144,20 +154,20 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    background: #161b22;
+    background: #ffffff;
     padding: 1rem;
     border-radius: 12px;
     transition: transform 0.2s;
-    border: 1px solid #21262d;
+    border: 1px solid #e8e4d9;
 }
 
 .event-item:hover {
     transform: translateX(5px);
-    border-color: #1a5c3a;
+    border-color: #c9772e;
 }
 
 .event-date {
-    background: #0f4a2f;
+    background: #c9772e;
     color: white;
     font-weight: bold;
     padding: 0.5rem 1rem;
@@ -169,17 +179,18 @@
 .event-info h3 {
     font-size: 1rem;
     margin-bottom: 0.2rem;
+    color: #2c2b28;
 }
 
 .event-info p {
     font-size: 0.85rem;
-    color: #8b949e;
+    color: #6b6a66;
 }
 
 /* Verse Section */
 .verse-section {
-    background: linear-gradient(135deg, #0a1912, #0a2e1c);
-    color: white;
+    background: linear-gradient(135deg, #e8e0d0, #d4cbbc);
+    color: #2c2b28;
     text-align: center;
     padding: 3rem 1rem;
 }
@@ -187,7 +198,7 @@
 .verse-section i {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    color: #1a5c3a;
+    color: #c9772e;
 }
 
 .verse-text {
@@ -198,32 +209,17 @@
 
 /* Join Section */
 .join-section {
-    background-color: #0a0f14;
+    background-color: #f0ede5;
     text-align: center;
 }
 
 .join-section p {
     margin: 0.5rem 0;
+    color: #5a5955;
 }
 
-.contact-btn {
-    background-color: #0f4a2f;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 50px;
-    cursor: pointer;
-    color: white;
-    margin-top: 1rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-}
-
-.contact-btn:hover {
-    background-color: #1a5c3a;
+.join-section p strong {
+    color: #2c2b28;
 }
 
 /* Responsive */

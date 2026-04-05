@@ -1,6 +1,6 @@
-/* Daily Verse Page Specific Styles */
+/* Daily Verse Page Specific Styles - LIGHT MODE */
 .verse-page {
-    background-color: #0d1117;
+    background-color: #faf8f2;
     min-height: 100vh;
     position: relative;
 }
@@ -17,29 +17,28 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    opacity: 0.60;
+    opacity: 0.15;
     z-index: 0;
     pointer-events: none;
 }
 
-
 .verse-card {
-    background: rgba(22, 27, 34, 0.411);
-    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
     border-radius: 24px;
     padding: 2.5rem;
     margin: 2rem auto;
     max-width: 800px;
     text-align: center;
-    border: 1px solid #21262d;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.096);
+    border: 1px solid #e8e4d9;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     position: relative;
     z-index: 1;
 }
 
 .verse-icon {
     font-size: 3rem;
-    color: #1a5c3a;
+    color: #c9772e;
     margin-bottom: 1rem;
 }
 
@@ -47,36 +46,36 @@
     font-size: 1.8rem;
     font-style: italic;
     line-height: 1.4;
-    color: #e6edf3;
+    color: #2c2b28;
     margin: 1.5rem 0;
     font-weight: 500;
 }
 
 .verse-reference {
     font-size: 1.2rem;
-    color: #1a5c3a;
+    color: #c9772e;
     font-weight: 600;
     margin-bottom: 1rem;
 }
 
 .verse-date {
     font-size: 0.9rem;
-    color: #6e7a76;
+    color: #8a8985;
     margin-bottom: 2rem;
 }
 
 .verse-context {
-    background: rgba(10, 15, 20, 0.8);
+    background: rgba(240, 237, 229, 0.8);
     border-radius: 16px;
     padding: 1rem;
     margin-top: 1.5rem;
     font-size: 0.85rem;
-    color: #8b949e;
+    color: #6b6a66;
     text-align: left;
 }
 
 .verse-context h4 {
-    color: #c9d1d9;
+    color: #2c2b28;
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
@@ -92,11 +91,11 @@
 }
 
 .share-btn {
-    background: #0a0f14;
-    border: 1px solid #21262d;
+    background: #ffffff;
+    border: 1px solid #e8e4d9;
     padding: 0.6rem 1.2rem;
     border-radius: 50px;
-    color: #c9d1d9;
+    color: #5a5955;
     cursor: pointer;
     transition: all 0.2s;
     display: inline-flex;
@@ -105,23 +104,24 @@
 }
 
 .share-btn:hover {
-    background: #1a5c3a;
-    border-color: #1a5c3a;
+    background: #c9772e;
+    border-color: #c9772e;
     color: white;
 }
 
 .calendar-section {
-    background: rgba(10, 15, 20, 0.8);
+    background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(5px);
     border-radius: 20px;
     padding: 1.5rem;
     margin-top: 2rem;
     position: relative;
     z-index: 1;
+    border: 1px solid #e8e4d9;
 }
 
 .calendar-section h3 {
-    color: #e6edf3;
+    color: #2c2b28;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -135,34 +135,35 @@
 }
 
 .verse-preview {
-    background: #161b22;
+    background: #ffffff;
     padding: 0.8rem;
     border-radius: 12px;
-    border-left: 3px solid #0f4a2f;
+    border-left: 3px solid #c9772e;
     cursor: pointer;
     transition: all 0.2s;
+    border: 1px solid #e8e4d9;
 }
 
 .verse-preview:hover {
     transform: translateX(5px);
-    border-left-color: #1a5c3a;
+    border-left-color: #b15f1e;
 }
 
 .verse-preview .date {
     font-size: 0.7rem;
-    color: #1a5c3a;
+    color: #c9772e;
 }
 
 .verse-preview .preview-text {
     font-size: 0.8rem;
-    color: #c9d1d9;
+    color: #5a5955;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .refresh-btn {
-    background: #0f4a2f;
+    background: #c9772e;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 50px;

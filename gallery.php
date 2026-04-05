@@ -17,7 +17,7 @@
             <a href="past-lessons.php">past lessons</a>
             <a href="bible-verse.php">bible verse</a>
             <a href="voting.php">voting</a>
-            <a href="gallery.php">gallery</a>
+            <a href="gallery.php" class="active">gallery</a>
         </div>
         <div class="right-container"><i class="fa-solid fa-circle-user"></i></div>
     </div>
