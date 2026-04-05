@@ -2,152 +2,227 @@
 
 /* Layout */
 .masonry-grid {
-    display: flex;
-    gap: 1.2rem;
+  display: flex;
+  gap: 1.2rem;
 }
 
 .masonry-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 /* Gallery Cards */
 .gallery-card {
-    background: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #e8e4d9;
-    transition: transform 0.2s, border-color 0.2s;
-    break-inside: avoid;
-    position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e8e4d9;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+  break-inside: avoid;
+  position: relative;
 }
 
 .gallery-card:hover {
-    transform: translateY(-3px);
-    border-color: #c9772e;
+  transform: translateY(-3px);
+  border-color: #c9772e;
 }
 
 .gallery-card img {
-    width: 100%;
-    height: auto;
-    display: block;
-    background: #f0ede5;
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #f0ede5;
 }
 
 /* Caption */
 .gallery-caption {
-    padding: 0.6rem 0.8rem;
-    color: #5a5955;
-    font-size: 0.75rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  padding: 0.6rem 0.8rem;
+  color: #5a5955;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .gallery-caption i {
-    color: #c9772e;
-    cursor: pointer;
-    transition: transform 0.2s;
+  color: #c9772e;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .gallery-caption i:hover {
-    transform: scale(1.1);
-    color: #b15f1e;
+  transform: scale(1.1);
+  color: #b15f1e;
 }
 
 /* Delete Button */
 .delete-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ff8a5c;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff8a5c;
 }
 
 .gallery-card:hover .delete-btn {
-    opacity: 1;
+  opacity: 1;
 }
 
 .delete-btn:hover {
-    background: #e85d3a;
-    color: white;
+  background: #e85d3a;
+  color: white;
 }
 
 /* Header & Upload */
 .gallery-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2rem;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
 }
 
 .gallery-header h2 {
-    color: #2c2b28;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
+  color: #2c2b28;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 }
 
 .upload-btn {
-    background: #c9772e;
-    color: white;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 auto;
+  background: #c9772e;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
 }
 
 .upload-btn:hover {
-    background: #b15f1e;
-    transform: scale(1.02);
+  background: #b15f1e;
+  transform: scale(1.02);
 }
 
 /* States */
 .loading,
 .empty-gallery {
-    text-align: center;
-    padding: 3rem;
-    color: #6b6a66;
-    width: 100%;
+  text-align: center;
+  padding: 3rem;
+  color: #6b6a66;
+  width: 100%;
 }
 
 .empty-gallery i {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #c9772e;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #c9772e;
+}
+
+/* Lightbox modal for full-size images */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 2000;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.active {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 40px;
+  color: white;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.lightbox-close:hover {
+  color: #c9772e;
+}
+
+.load-more-btn {
+  display: block;
+  margin: 2rem auto;
+  padding: 0.8rem 2rem;
+  background: #c9772e;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.load-more-btn:hover {
+  background: #b15f1e;
+  transform: scale(1.02);
+}
+
+.load-more-btn.hidden {
+  display: none;
+}
+
+.gallery-thumb {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.gallery-thumb:hover {
+  opacity: 0.9;
 }
 
 /* Responsive */
 @media (max-width: 700px) {
-    .masonry-grid {
-        gap: 0.8rem;
-    }
-    .masonry-column {
-        gap: 0.8rem;
-    }
-    .gallery-header {
-        flex-direction: column;
-        text-align: center;
-    }
+  .masonry-grid {
+    gap: 0.8rem;
+  }
+  .masonry-column {
+    gap: 0.8rem;
+  }
+  .gallery-header {
+    flex-direction: column;
+    text-align: center;
+  }
 }

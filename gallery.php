@@ -29,9 +29,16 @@
                     Photo</button>
             </div>
             <div class="masonry-grid" id="masonryGrid">
-                <div class="loading">📸 Loading memories...</div>
+                <div class="loading">Loading memories...</div>
             </div>
+            <button id="LoadMoretbn" class="load-more-btn hidden">Load more Photos</button>
         </div>
+    </div>
+
+    <!---Light Modal for full size-img--->
+    <div id="lightbox" class="lightbox">
+        <spa class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Full img size">
     </div>
 
     <input type="file" id="fileInput" accept="image/*" style="display:none">
