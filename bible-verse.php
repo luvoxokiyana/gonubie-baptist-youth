@@ -66,7 +66,6 @@
                 <div class="social-icons">
                     <i class="fa-brands fa-instagram"></i>
                     <i class="fa-brands fa-whatsapp"></i>
-                    <i class="fa-brands fa-discord"></i>
                     <i class="fa-solid fa-envelope"></i>
                 </div>
             </div>
