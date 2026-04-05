@@ -1,0 +1,301 @@
+        /* Past Lessons Page Specific Styles */
+        .lessons-page {
+            background-color: #0d1117;
+            min-height: 100vh;
+        }
+
+        .lessons-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .lessons-header h1 {
+            color: #e6edf3;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .lessons-header h1 i {
+            color: #1a5c3a;
+        }
+
+        .lessons-header p {
+            color: #8b949e;
+            margin-top: 0.5rem;
+        }
+
+        /* Upload Section (Admin only) */
+        .upload-section {
+            background: #161b22;
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #21262d;
+        }
+
+        .upload-section h3 {
+            color: #e6edf3;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: #c9d1d9;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            background: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 12px;
+            padding: 0.8rem;
+            color: white;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #1a5c3a;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .upload-submit {
+            background: #0f4a2f;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            align-self: flex-start;
+        }
+
+        .upload-submit:hover {
+            background: #1a5c3a;
+            transform: scale(1.02);
+        }
+
+        /* Lessons Grid */
+        .lessons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .lesson-card {
+            background: #161b22;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #21262d;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            border-color: #1a5c3a;
+        }
+
+        .lesson-icon {
+            background: linear-gradient(135deg, #0a2e1c, #0f4a2f);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .lesson-icon i {
+            font-size: 3rem;
+            color: #e6edf3;
+        }
+
+        .lesson-content {
+            padding: 1.2rem;
+        }
+
+        .lesson-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e6edf3;
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-date {
+            font-size: 0.75rem;
+            color: #1a5c3a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-description {
+            font-size: 0.85rem;
+            color: #8b949e;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .lesson-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .view-btn {
+            background: #0a0f14;
+            border: 1px solid #21262d;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: #c9d1d9;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-btn:hover {
+            background: #1a5c3a;
+            border-color: #1a5c3a;
+            color: white;
+        }
+
+        .delete-lesson {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            color: #ff6b6b;
+        }
+
+        .delete-lesson:hover {
+            background: #ff4444;
+            color: white;
+        }
+
+        .empty-lessons {
+            text-align: center;
+            padding: 4rem;
+            background: #161b22;
+            border-radius: 20px;
+            color: #8b949e;
+        }
+
+        .empty-lessons i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #0f4a2f;
+        }
+
+        /* PDF Viewer Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .modal-content {
+            background: #0d1117;
+            margin: 1rem auto;
+            padding: 1rem;
+            max-width: 95%;
+            width: 900px;
+            border-radius: 16px;
+            border: 1px solid #21262d;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #8b949e;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+
+        .close-modal:hover {
+            color: #ff6b6b;
+        }
+
+        .modal-title {
+            color: #e6edf3;
+            margin-bottom: 1rem;
+            padding-right: 2rem;
+            font-size: 1.2rem;
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 80vh;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .pdf-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .download-pdf-btn {
+            background: #0f4a2f;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .download-pdf-btn:hover {
+            background: #1a5c3a;
+        }
+
+        @media (max-width: 700px) {
+            .lessons-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                margin: 0.5rem;
+                padding: 0.8rem;
+            }
+            .pdf-container {
+                height: 70vh;
+            }
+        }
