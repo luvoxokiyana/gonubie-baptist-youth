@@ -279,3 +279,4 @@ document.addEventListener("DOMContentLoaded", () => {
     loadGallery();
     document.getElementById("uploadBtn").addEventListener("click", handleUpload);
 });
+
