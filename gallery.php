@@ -64,20 +64,17 @@ $is_logged_in = isset($_SESSION['member_id']);
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            background: #f0ede5;
+            background: #f0ede500;
             padding: 0.4rem 1rem;
             border-radius: 50px;
         }
         
         .user-status span {
-            color: #5a5955;
+            color: #5a595500;
             font-size: 0.85rem;
         }
         
-        .user-status a {
-            color: #c9772e;
-            text-decoration: none;
-        }
+       
     </style>
 </head>
 
@@ -94,11 +91,11 @@ $is_logged_in = isset($_SESSION['member_id']);
         <div class="right-container">
             <?php if ($is_logged_in): ?>
                 <div class="user-status">
-                    <span><i class="fa-solid fa-user-check"></i></span>
+                    <span><i class="fa-solid fa-circle-user"></i><?php echo htmlspecialchars($_SESSION['member_name'] ?? 'Member'); ?></span>
                     <a href="logout.php"></i></a>
                 </div>
             <?php else: ?>
-                <a href="login.php?redirect=gallery.php" style="color: #c9772e;">
+                <a href="login.php?redirect=voting.php" style="color: #f0b90b;">
                     <i class="fa-solid fa-circle-user"></i>
                 </a>
             <?php endif; ?>
