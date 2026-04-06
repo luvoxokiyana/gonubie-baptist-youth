@@ -161,25 +161,7 @@ document.querySelectorAll('.gallery-thumb').forEach(img => {
         });
     });
 
-    card.innerHTML = `
-    <div class="image-wrapper">
-        <img 
-            src="${thumbnailSrc}" 
-            alt="${escapeHtml(image.caption)}" 
-            loading="lazy"
-            decoding="async"
-            data-fullsrc="${image.src}"
-            data-id="${image.id}"
-            class="gallery-thumb"
-            onerror="this.src='https://picsum.photos/400/300?random=1'"
-        >
-        ${image.isUploaded ? `<button class="delete-btn" data-id="${image.id}"><i class="fa-regular fa-trash-alt"></i></button>` : ''}
-    </div>
-    <div class="gallery-caption">
-        <span>${escapeHtml(image.caption)}</span>
-        <i class="fa-regular fa-heart"></i>
-    </div>
-`;
+
 }
 
 function loadMoreImages() {
