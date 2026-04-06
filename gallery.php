@@ -95,11 +95,11 @@ $is_logged_in = isset($_SESSION['member_id']);
             <?php if ($is_logged_in): ?>
                 <div class="user-status">
                     <span><i class="fa-solid fa-user-check"></i> <?php echo htmlspecialchars($_SESSION['member_name'] ?? 'Member'); ?></span>
-                    <a href="logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                    <a href="logout.php"><i class="fa-solid fa-sign-out-alt"></i></a>
                 </div>
             <?php else: ?>
                 <a href="login.php?redirect=gallery.php" style="color: #c9772e;">
-                    <i class="fa-solid fa-circle-user"></i> Login
+                    <i class="fa-solid fa-circle-user"></i>
                 </a>
             <?php endif; ?>
         </div>

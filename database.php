@@ -93,9 +93,9 @@ class Database {
         if ($stmt->fetchColumn() > 0) return;
 
         $defaults = [
-            'bible' => [['b1','Overcoming Anxiety',1],['b2','Friendship & Faith',2],['b3','Purpose & Calling',3],['b4','Social Media & Identity',4]],
-            'game' => [['g1','Capture the Flag (Glow)',1],['g2','Minute to Win It',2],['g3','Karaoke Battle',3],['g4','Escape Room Challenge',4]],
-            'event' => [['e1','Beach Braai & Bonfire',1],['e2','Lock-in (All Night)',2],['e3','Movie & Popcorn Night',3],['e4','Sports Tournament',4]]
+            'bible' => [['b1','Jubilee type talk',1],['b2','Bible or Not',2],['b3','Friendships, Boundries, and Peer Pressure',3],['b4','Living Out Your Faith(Not Just Believing It)',4]],
+            'game' => [['g1','Speak and Switch',1],['g2','Minute to Win It',2],['g3','Netball Tournament',3],['g4','Dodgeball',4]],
+            'event' => [['e1','Movies Night(The Choosen)',1],['e2','Hemigways(Bowling and Arcade)',2],['e3','Beach Day',3],['e4','Sports Tournament',4]]
         ];
 
         $insert = $conn->prepare("INSERT INTO poll_options (poll_type, option_id, option_name, display_order) VALUES (?, ?, ?, ?)");
