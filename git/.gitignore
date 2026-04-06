@@ -1,2 +1,35 @@
-images/gallery/SC Event 2026.zip 
-test.php
+# Database credentials
+database.php
+
+# API files
+api.php
+
+# Account creation
+create_account.php
+make_admin.php
+hash_password.php
+
+# Login page
+login.php
+
+# Uploaded content
+images/gallery/
+uploads/
+
+# Local images (not the folder structure)
+*.jpg
+*.png
+*.jpeg
+!images/placeholder.jpg
+
+# Git files
+.gitignore
+.git/
+
+# Environment
+.env
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
