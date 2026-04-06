@@ -141,11 +141,16 @@ async function castVote(pollType) {
         const result = await response.json();
         
         if (result.success) {
-            // Reload data to get updated counts
             await loadData();
-            alert(`Vote recorded! Thanks for making your voice heard!`);
+            alert(`Vote recorded!`);
         } else {
-            alert(`❌ ${result.error}`);
+            // Handle login required error - redirect to login
+            if (result.error === 'You must be logged in to vote') {
+                alert('Please login to vote');
+                window.location.href = 'login.php?redirect=voting.php';
+            } else {
+                alert(`${result.error}`);
+            }
         }
     } catch (error) {
         console.error('Error casting vote:', error);
@@ -191,7 +196,7 @@ async function addSuggestion() {
             input.value = '';
             alert(`Thanks for your suggestion! We'll consider it for future polls.`);
         } else {
-            alert(`❌ ${result.error}`);
+            alert(`${result.error}`);
         }
     } catch (error) {
         console.error('Error adding suggestion:', error);

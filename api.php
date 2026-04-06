@@ -12,6 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once 'database.php';
 
+// Helper function to check if user is logged in
+function isLoggedIn() {
+    return isset($_SESSION['member_id']);
+}
+
 $db = new Database();
 $db->setupTables();
 $conn = $db->getConnection();
@@ -22,39 +27,30 @@ if (!$conn) {
 }
 
 function getUserIP() {
-    // Priority 1: Cloudflare (InfinityFree uses this)
     if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
         return $_SERVER['HTTP_CF_CONNECTING_IP'];
     }
-    
-    // Priority 2: Forwarded by proxy
     if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-        return trim($ips[0]); // First IP is the real visitor
+        return trim($ips[0]);
     }
-    
-    // Priority 3: Direct IP (fallback)
     return $_SERVER['REMOTE_ADDR'] ?? '';
 }
 
-// Create a unique device fingerprint (IP + Browser)
 function getDeviceFingerprint() {
     $ip = getUserIP();
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-    // Add screen resolution if available (from JavaScript)
     $screen = $_POST['screen_resolution'] ?? '';
-    
-    // Combine everything for a unique device ID
     return md5($ip . $userAgent . $screen);
 }
 
-// Use device fingerprint instead of just IP
 $device_id = getDeviceFingerprint();
 $action = $_GET['action'] ?? '';
 
 try {
     switch($action) {
         case 'get_votes':
+            // Anyone can see vote results
             $pollType = $_GET['poll'] ?? '';
             if ($pollType) {
                 $data = getPollData($conn, $pollType, $device_id);
@@ -69,6 +65,12 @@ try {
             break;
 
         case 'cast_vote':
+            // LOGIN REQUIRED
+            if (!isLoggedIn()) {
+                echo json_encode(['success' => false, 'error' => 'You must be logged in to vote']);
+                break;
+            }
+            
             $input = json_decode(file_get_contents('php://input'), true);
             $pollType = $input['poll_type'] ?? '';
             $optionId = $input['option_id'] ?? '';
@@ -83,6 +85,7 @@ try {
             break;
 
         case 'get_suggestions':
+            // Anyone can see suggestions
             $stmt = $conn->prepare("SELECT suggestion_text FROM suggestions ORDER BY created_at DESC LIMIT 50");
             $stmt->execute();
             $suggestions = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -90,6 +93,12 @@ try {
             break;
 
         case 'add_suggestion':
+            // LOGIN REQUIRED for suggestions
+            if (!isLoggedIn()) {
+                echo json_encode(['success' => false, 'error' => 'You must be logged in to make suggestions']);
+                break;
+            }
+            
             $input = json_decode(file_get_contents('php://input'), true);
             $text = trim($input['suggestion'] ?? '');
             
