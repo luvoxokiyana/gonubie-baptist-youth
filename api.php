@@ -138,23 +138,22 @@ try {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
-function getPollData($conn, $pollType, $device_id)
-{
+function getPollData($conn, $pollType, $device_id) {
     $stmt = $conn->prepare("
-        SELECT po.option_id, po.option_name, COUNT(v.id) as votes
+        SELECT po.option_id, po.option_name, po.description, po.game_rules, COUNT(v.id) as votes
         FROM poll_options po
         LEFT JOIN votes v ON po.poll_type = v.poll_type AND po.option_id = v.option_id
         WHERE po.poll_type = ?
-        GROUP BY po.option_id, po.option_name
+        GROUP BY po.option_id, po.option_name, po.description, po.game_rules
         ORDER BY po.display_order
     ");
     $stmt->execute([$pollType]);
     $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    
     $stmt = $conn->prepare("SELECT voted_option_id FROM user_vote_status WHERE user_ip = ? AND poll_type = ?");
     $stmt->execute([$device_id, $pollType]);
     $userVote = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
     return [
         'options' => $options,
         'has_voted' => $userVote !== false,

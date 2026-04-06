@@ -190,6 +190,49 @@
     margin-top: 1rem;
 }
 
+/* Option description styles */
+.option-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.option-header label {
+    font-weight: bold;
+}
+
+.option-description {
+    margin-left: 1.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: #0d1117;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #8b949e;
+    line-height: 1.4;
+    border-left: 2px solid #f0b90b;
+}
+
+.option-description i {
+    color: #f0b90b;
+    margin-right: 0.25rem;
+}
+
+/* For game rules specifically */
+.option-description.game-rules {
+    background: #1a1f2e;
+    border-left-color: #2ea043;
+}
+
+/* Collapsible description on mobile */
+@media (max-width: 768px) {
+    .option-description {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.6rem;
+    }
+}
+
 .suggestion-box {
     background: #ffffff;
     border-radius: 20px;

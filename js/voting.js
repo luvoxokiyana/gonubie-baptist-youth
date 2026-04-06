@@ -48,21 +48,28 @@ function renderPoll(pollType) {
 
     if (!optionsContainer || !poll) return;
 
-    // Render radio options
+    // Render radio options with descriptions
     optionsContainer.innerHTML = '';
     poll.options.forEach(opt => {
         const div = document.createElement('div');
         div.className = 'poll-option';
         const isChecked = poll.user_choice === opt.option_id;
+        
+        // Check if this is a game (has game_rules) or bible topic (has description)
+        const description = opt.game_rules || opt.description;
+        
         div.innerHTML = `
-            <input type="radio" name="${pollType}_vote" value="${opt.option_id}" id="${opt.option_id}" ${isChecked ? 'checked' : ''}>
-            <label for="${opt.option_id}">${escapeHtml(opt.option_name)}</label>
-            ${isChecked ? '<small>✓ Your vote</small>' : ''}
+            <div class="option-header">
+                <input type="radio" name="${pollType}_vote" value="${opt.option_id}" id="${opt.option_id}" ${isChecked ? 'checked' : ''}>
+                <label for="${opt.option_id}">${escapeHtml(opt.option_name)}</label>
+                ${isChecked ? '<small>✓ Your vote</small>' : ''}
+            </div>
+            ${description ? `<div class="option-description">${escapeHtml(description).replace(/\n/g, '<br>')}</div>` : ''}
         `;
         optionsContainer.appendChild(div);
     });
 
-    // If already voted, disable all radios and vote button
+    // Rest of the function remains the same...
     if (poll.has_voted) {
         const radios = optionsContainer.querySelectorAll('input');
         radios.forEach(radio => radio.disabled = true);
@@ -75,7 +82,6 @@ function renderPoll(pollType) {
         voteBtn.style.cursor = 'pointer';
     }
 
-    // Calculate total votes and render results
     const totalVotes = poll.options.reduce((sum, opt) => sum + (opt.votes || 0), 0);
 
     if (totalVotes > 0) {
@@ -101,7 +107,6 @@ function renderPoll(pollType) {
         resultsContainer.innerHTML = '<div class="total-votes">✨ No votes yet. Be the first!</div>';
     }
 
-    // Show "already voted" message
     if (poll.has_voted && poll.user_choice) {
         const selectedOption = poll.options.find(opt => opt.option_id === poll.user_choice);
         votedMessageDiv.innerHTML = `<div class="already-voted"><i class="fa-regular fa-circle-check"></i> You voted for: ${selectedOption ? escapeHtml(selectedOption.option_name) : 'something'}</div>`;

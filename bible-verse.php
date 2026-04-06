@@ -19,7 +19,7 @@
             </span>
         </div>
         <div class="middle-container">
-            <a href="index.html">home</a>
+            <a href="index.php">home</a>
             <a href="past-lessons.php">past lessons</a>
             <a href="bible-verse.php">bible verse</a>
             <a href="voting.php">voting</a>
