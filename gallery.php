@@ -19,7 +19,7 @@ $is_logged_in = isset($_SESSION['member_id']);
         }
         
         body:not(.logged-in) .gallery-card:hover img {
-            filter: blur(12px);
+            filter: blur(7px);
         }
         
         /* Optional: slight blur on captions too */
