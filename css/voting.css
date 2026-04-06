@@ -225,6 +225,31 @@
     border-left-color: #2ea043;
 }
 
+.poll-description-container {
+    margin: 0.5rem 0 1rem 1.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #0d1117;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #8b949e;
+    line-height: 1.4;
+    border-left: 2px solid #f0b90b;
+    display: none; /* Hidden by default, shown when option selected */
+}
+
+.poll-description-container.visible {
+    display: block;
+}
+
+.poll-description-container i {
+    color: #f0b90b;
+    margin-right: 0.25rem;
+}
+
+.poll-description-container.game-rules {
+    border-left-color: #2ea043;
+}
+
 /* Collapsible description on mobile */
 @media (max-width: 768px) {
     .option-description {
