@@ -206,22 +206,31 @@
     margin-left: 1.5rem;
     margin-bottom: 0.75rem;
     padding: 0.5rem 0.75rem;
-    background: #0d1117;
+    background: #faf8f2;  /* Changed from dark */
     border-radius: 8px;
     font-size: 0.75rem;
-    color: #8b949e;
+    color: #5a5955;  /* Changed from light */
     line-height: 1.4;
-    border-left: 2px solid #f0b90b;
+    border-left: 2px solid #c9772e;  /* Changed to match theme */
 }
 
-.option-description i {
-    color: #f0b90b;
-    margin-right: 0.25rem;
+.poll-description-container {
+    margin: 0.5rem 0 1rem 1.5rem;
+    padding: 0.5rem 0.75rem;
+    background: #faf8f2;  /* Changed from dark */
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #5a5955;  /* Changed from light */
+    line-height: 1.4;
+    border-left: 2px solid #c9772e;
+    display: none;
 }
 
-/* For game rules specifically */
-.option-description.game-rules {
-    background: #1a1f2e;
+.poll-description-container i {
+    color: #c9772e;
+}
+
+.poll-description-container.game-rules {
     border-left-color: #2ea043;
 }
 

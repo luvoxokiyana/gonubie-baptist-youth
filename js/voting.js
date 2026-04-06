@@ -113,6 +113,31 @@ function renderPoll(pollType) {
     } else {
         votedMessageDiv.innerHTML = '';
     }
+
+    document.querySelectorAll(`input[name="${pollType}_vote"]`).forEach(radio => {
+    // Remove existing listeners to avoid duplicates
+    radio.removeEventListener('change', radio._listener);
+    
+    const listener = (e) => {
+        const selectedId = e.target.value;
+        const selectedOption = poll.options.find(opt => opt.option_id === selectedId);
+        const descriptionContainer = document.getElementById(`${pollType}-description`);
+        
+        if (selectedOption && descriptionContainer) {
+            const description = selectedOption.game_rules || selectedOption.description;
+            if (description) {
+                descriptionContainer.innerHTML = `<i class="fa-regular fa-lightbulb"></i> ${escapeHtml(description).replace(/\n/g, '<br>')}`;
+                descriptionContainer.classList.add('visible');
+            } else {
+                descriptionContainer.innerHTML = '';
+                descriptionContainer.classList.remove('visible');
+            }
+        }
+    };
+    
+    radio.addEventListener('change', listener);
+    radio._listener = listener; // Store for cleanup
+});
 }
 
 function renderAllPolls() {
@@ -232,25 +257,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('submit-suggestion').addEventListener('click', addSuggestion);
     document.getElementById('suggestion-input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') addSuggestion();
-    });
-});
-
-// Add event listeners to show description when radio is selected
-document.querySelectorAll(`input[name="${pollType}_vote"]`).forEach(radio => {
-    radio.addEventListener('change', (e) => {
-        const selectedId = e.target.value;
-        const selectedOption = poll.options.find(opt => opt.option_id === selectedId);
-        const descriptionContainer = document.getElementById(`${pollType}-description`);
-        
-        if (selectedOption && descriptionContainer) {
-            const description = selectedOption.game_rules || selectedOption.description;
-            if (description) {
-                descriptionContainer.innerHTML = `<i class="fa-regular fa-lightbulb"></i> ${escapeHtml(description).replace(/\n/g, '<br>')}`;
-                descriptionContainer.classList.add('visible');
-            } else {
-                descriptionContainer.innerHTML = '';
-                descriptionContainer.classList.remove('visible');
-            }
-        }
     });
 });
