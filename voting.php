@@ -103,7 +103,6 @@ $is_logged_in = isset($_SESSION['member_id']);
     </div>
 
     <?php if (!$is_logged_in): ?>
-        <!-- Login Wall - Show this instead of voting content -->
         <div class="login-wall">
             <i class="fa-solid fa-lock"></i>
             <h2>Voting Restricted</h2>
@@ -124,7 +123,6 @@ $is_logged_in = isset($_SESSION['member_id']);
             </div>
         </div>
     <?php else: ?>
-        <!-- Voting content - only shown to logged in users -->
         <div class="voting-page">
             <div class="container">
                 <div class="voting-header">
@@ -133,6 +131,7 @@ $is_logged_in = isset($_SESSION['member_id']);
                 </div>
 
                 <div class="poll-grid">
+                    <!-- Bible Study Poll -->
                     <div class="poll-card" id="poll-bible">
                         <h2><i class="fa-solid fa-bible"></i> Next Bible Study</h2>
                         <div class="poll-description">What topic should we study next Friday?</div>
@@ -142,6 +141,7 @@ $is_logged_in = isset($_SESSION['member_id']);
                         <div id="bible-voted-message"></div>
                     </div>
 
+                    <!-- Game Poll -->
                     <div class="poll-card" id="poll-game">
                         <h2><i class="fa-solid fa-gamepad"></i> Next Game</h2>
                         <div class="poll-description">Which game do you want to play?</div>
@@ -151,6 +151,7 @@ $is_logged_in = isset($_SESSION['member_id']);
                         <div id="game-voted-message"></div>
                     </div>
 
+                    <!-- Event Poll -->
                     <div class="poll-card" id="poll-event">
                         <h2><i class="fa-regular fa-calendar"></i> Future Event</h2>
                         <div class="poll-description">What event should we plan next month?</div>
@@ -158,6 +159,17 @@ $is_logged_in = isset($_SESSION['member_id']);
                         <button class="vote-btn" id="vote-event-btn">📅 Cast Vote</button>
                         <div class="results" id="event-results"></div>
                         <div id="event-voted-message"></div>
+                    </div>
+                </div>
+
+                <!-- Description Panel - Shows details of selected option -->
+                <div class="description-panel" id="description-panel">
+                    <div class="description-header">
+                        <i class="fa-regular fa-lightbulb"></i>
+                        <h3>About this option</h3>
+                    </div>
+                    <div class="description-content" id="description-content">
+                        <p class="placeholder-text">Select an option above to see details</p>
                     </div>
                 </div>
 

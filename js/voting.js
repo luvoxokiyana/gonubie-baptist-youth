@@ -1,8 +1,15 @@
-// js/voting.js - Updated to use backend API with always visible descriptions
+// js/voting.js - Updated with separate description panel
 let votesData = {
     bible: { options: [], has_voted: false, user_choice: null },
     game: { options: [], has_voted: false, user_choice: null },
     event: { options: [], has_voted: false, user_choice: null }
+};
+
+// Store current selected option data
+let currentSelected = {
+    bible: null,
+    game: null,
+    event: null
 };
 
 // API base URL
@@ -38,7 +45,64 @@ async function loadSuggestions() {
     }
 }
 
-// Render poll options and results
+// Show description in the panel
+function showDescription(pollType, optionId) {
+    const poll = votesData[pollType];
+    if (!poll) return;
+    
+    const selectedOption = poll.options.find(opt => opt.option_id === optionId);
+    if (!selectedOption) return;
+    
+    const descriptionContainer = document.getElementById('description-content');
+    if (!descriptionContainer) return;
+    
+    const isGame = pollType === 'game';
+    const description = selectedOption.game_rules || selectedOption.description;
+    
+    if (description) {
+        if (isGame) {
+            // Format game rules as bullet points
+            const rulesHtml = description.split('\n').map(line => {
+                if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
+                    return `<li>${escapeHtml(line.trim().substring(1).trim())}</li>`;
+                }
+                return line.trim() ? `<li>${escapeHtml(line.trim())}</li>` : '';
+            }).filter(line => line).join('');
+            
+            descriptionContainer.innerHTML = `
+                <div class="topic-detail">
+                    <h4><i class="fa-solid fa-dice-d6 game-icon"></i> ${escapeHtml(selectedOption.option_name)}</h4>
+                    <p>${escapeHtml(description.split('\n')[0])}</p>
+                    ${rulesHtml ? `<ul class="rules-list">${rulesHtml}</ul>` : ''}
+                </div>
+            `;
+        } else {
+            descriptionContainer.innerHTML = `
+                <div class="topic-detail">
+                    <h4><i class="fa-regular fa-lightbulb topic-icon"></i> About "${escapeHtml(selectedOption.option_name)}"</h4>
+                    <p>${escapeHtml(description).replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+        }
+    } else {
+        descriptionContainer.innerHTML = `
+            <div class="topic-detail">
+                <p>More information about this option coming soon!</p>
+            </div>
+        `;
+    }
+    
+    // Update selected styling
+    document.querySelectorAll(`.poll-option`).forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    const selectedRadio = document.querySelector(`input[name="${pollType}_vote"][value="${optionId}"]`);
+    if (selectedRadio) {
+        selectedRadio.closest('.poll-option').classList.add('selected');
+    }
+}
+
+// Render poll options
 function renderPoll(pollType) {
     const poll = votesData[pollType];
     const optionsContainer = document.getElementById(`${pollType}-options`);
@@ -48,28 +112,32 @@ function renderPoll(pollType) {
 
     if (!optionsContainer || !poll) return;
 
-    // Render radio options with descriptions always visible
     optionsContainer.innerHTML = '';
     poll.options.forEach(opt => {
         const div = document.createElement('div');
         div.className = 'poll-option';
         const isChecked = poll.user_choice === opt.option_id;
         
-        // Check if this is a game (has game_rules) or bible topic (has description)
-        const description = opt.game_rules || opt.description;
-        
         div.innerHTML = `
-            <div class="option-header">
-                <input type="radio" name="${pollType}_vote" value="${opt.option_id}" id="${opt.option_id}" ${isChecked ? 'checked' : ''} ${poll.has_voted ? 'disabled' : ''}>
-                <label for="${opt.option_id}">${escapeHtml(opt.option_name)}</label>
-                ${isChecked ? '<small>✓ Your vote</small>' : ''}
-            </div>
-            ${description ? `<div class="option-description">📖 ${escapeHtml(description).replace(/\n/g, '<br>')}</div>` : ''}
+            <input type="radio" name="${pollType}_vote" value="${opt.option_id}" id="${opt.option_id}_${pollType}" ${isChecked ? 'checked' : ''} ${poll.has_voted ? 'disabled' : ''}>
+            <label for="${opt.option_id}_${pollType}">${escapeHtml(opt.option_name)}</label>
+            ${isChecked ? '<small>✓ Your vote</small>' : ''}
         `;
         optionsContainer.appendChild(div);
     });
 
-    // Handle vote button state
+    // Add event listeners to show description when radio is clicked
+    document.querySelectorAll(`input[name="${pollType}_vote"]`).forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            showDescription(pollType, e.target.value);
+        });
+        
+        // If this radio is checked, show its description
+        if (radio.checked) {
+            showDescription(pollType, radio.value);
+        }
+    });
+
     if (poll.has_voted) {
         const radios = optionsContainer.querySelectorAll('input');
         radios.forEach(radio => radio.disabled = true);
@@ -108,7 +176,6 @@ function renderPoll(pollType) {
         resultsContainer.innerHTML = '<div class="total-votes">✨ No votes yet. Be the first!</div>';
     }
 
-    // Show voted message
     if (poll.has_voted && poll.user_choice) {
         const selectedOption = poll.options.find(opt => opt.option_id === poll.user_choice);
         votedMessageDiv.innerHTML = `<div class="already-voted"><i class="fa-regular fa-circle-check"></i> You voted for: ${selectedOption ? escapeHtml(selectedOption.option_name) : 'something'}</div>`;
@@ -164,7 +231,6 @@ async function castVote(pollType) {
     }
 }
 
-// Render suggestions
 function renderSuggestions(suggestions) {
     const container = document.getElementById('suggestions-list');
     if (!container) return;
@@ -179,7 +245,6 @@ function renderSuggestions(suggestions) {
     ).join('');
 }
 
-// Add suggestion via API
 async function addSuggestion() {
     const input = document.getElementById('suggestion-input');
     const text = input.value.trim();
