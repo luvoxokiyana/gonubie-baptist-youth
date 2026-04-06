@@ -123,17 +123,28 @@ function renderMasonryGrid() {
     grid.innerHTML = '';
     grid.appendChild(fragment);
     
-    // Add click handlers for thumbnails (open lightbox with full image)
-    document.querySelectorAll('.gallery-thumb').forEach(img => {
-        img.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const fullSrc = img.getAttribute('data-fullsrc');
-            if (fullSrc) {
-                lightboxImg.src = fullSrc;
-                lightbox.classList.add('active');
-            }
-        });
+// Add click handlers for thumbnails (open lightbox with full image)
+// Check login status from body class
+const isLoggedIn = document.body.classList.contains('logged-in');
+
+document.querySelectorAll('.gallery-thumb').forEach(img => {
+    img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        // If not logged in, redirect to login page
+        if (!isLoggedIn) {
+            window.location.href = 'login.php?redirect=gallery.php';
+            return;
+        }
+        
+        // Logged in - show lightbox
+        const fullSrc = img.getAttribute('data-fullsrc');
+        if (fullSrc) {
+            lightboxImg.src = fullSrc;
+            lightbox.classList.add('active');
+        }
     });
+});
     
     // Add delete handlers for uploaded images
     document.querySelectorAll(".delete-btn").forEach(btn => {

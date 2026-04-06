@@ -143,7 +143,7 @@ async function castVote(pollType) {
         if (result.success) {
             // Reload data to get updated counts
             await loadData();
-            alert(`✅ Vote recorded! Thanks for making your voice heard!`);
+            alert(`Vote recorded! Thanks for making your voice heard!`);
         } else {
             alert(`❌ ${result.error}`);
         }
