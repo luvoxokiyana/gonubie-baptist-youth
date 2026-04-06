@@ -93,7 +93,7 @@ class Database {
         if ($stmt->fetchColumn() > 0) return;
 
         $defaults = [
-            'bible' => [['b1','Jubilee type talk',1],['b2','Bible or Not',2],['b3','Friendships, Boundries, and Peer Pressure',3],['b4','Living Out Your Faith(Not Just Believing It)',4]],
+            'bible' => [['b1','Jubilee Youth Talk',1],['b2','Jubilee Hot-Takes',2],['b3','Investigating the paranormal',3],['b4',"Temptation- the Why's and How's )",4]],
             'game' => [['g1','Speak and Switch',1],['g2','Minute to Win It',2],['g3','Netball Tournament',3],['g4','Dodgeball',4]],
             'event' => [['e1','Movies Night(The Choosen)',1],['e2','Hemigways(Bowling and Arcade)',2],['e3','Beach Day',3],['e4','Sports Tournament',4]]
         ];

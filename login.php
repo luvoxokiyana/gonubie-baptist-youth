@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bd = new Database();
     $conn = $bd->getConnection();
 
-    $stmt = $conn->prepare('SELECT id, username, password, full_name FROM youth_memebers WHERE  username = ?');
+    $stmt = $conn->prepare('SELECT id, username, password, full_name FROM youth_members WHERE  username = ?');
     $stmt->execute([$username]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
