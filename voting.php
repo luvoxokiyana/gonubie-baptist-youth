@@ -81,7 +81,7 @@ $is_logged_in = isset($_SESSION['member_id']);
             <span><i class="fa-solid fa-cross"></i> Gonubie Baptist Youth</span>
         </div>
         <div class="middle-container">
-            <a href="home.php">home</a>
+            <a href="index.php">home</a>
             <a href="past-lessons.php">past lessons</a>
             <a href="bible-verse.php">bible verse</a>
             <a href="voting.php">voting</a>
