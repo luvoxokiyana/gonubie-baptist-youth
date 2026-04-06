@@ -1,3 +1,6 @@
+<?php
+$api_url = 'api.php';
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,6 +13,18 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <style>
+      /* Loading state styles */
+      .loading-placeholder {
+        opacity: 0.6;
+        display: inline-block;
+      }
+      .vote-count {
+        font-size: 0.7rem;
+        color: #f0b90b;
+        margin-left: 0.5rem;
+      }
+    </style>
   </head>
   <body>
     <div class="header">
@@ -74,20 +89,22 @@
       </div>
     </div>
 
-    <!-- This Friday Section -->
+    <!-- This Friday Section - Dynamically updated -->
     <div class="friday-section">
       <div class="container">
         <h2><i class="fa-solid fa-fire"></i> This Friday</h2>
         <div class="friday-grid">
-          <div class="friday-card">
+          <div class="friday-card" id="topic-card">
             <i class="fa-solid fa-message"></i>
             <h3>Topic</h3>
-            <p>"Purpose Over Pressure" — Finding your identity in Christ</p>
+            <p id="topic-text">Loading...</p>
+            <span id="topic-votes" class="vote-count"></span>
           </div>
-          <div class="friday-card">
+          <div class="friday-card" id="game-card">
             <i class="fa-solid fa-dice-d6"></i>
             <h3>Game</h3>
-            <p>Human Knot Challenge + Ultimate Dodgeball</p>
+            <p id="game-text">Loading...</p>
+            <span id="game-votes" class="vote-count"></span>
           </div>
           <div class="friday-card">
             <i class="fa-solid fa-clock"></i>
@@ -172,6 +189,50 @@
             </div>
         </div>
     </div>
-    <script src="js/home.js"></script>
+    
+    <script>
+    // Fetch and display the current winning topic and game
+    async function loadWinners() {
+        try {
+            const response = await fetch('<?php echo $api_url; ?>?action=get_winners');
+            const result = await response.json();
+            
+            if (result.success) {
+                // Update topic section
+                const topicText = document.getElementById('topic-text');
+                const topicVotes = document.getElementById('topic-votes');
+                if (topicText) {
+                    topicText.innerHTML = `"${result.data.topic.name}"`;
+                    if (topicVotes) {
+                        topicVotes.innerHTML = `📊 ${result.data.topic.votes} vote${result.data.topic.votes !== 1 ? 's' : ''}`;
+                    }
+                }
+                
+                // Update game section
+                const gameText = document.getElementById('game-text');
+                const gameVotes = document.getElementById('game-votes');
+                if (gameText) {
+                    gameText.innerHTML = result.data.game.name;
+                    if (gameVotes) {
+                        gameVotes.innerHTML = `📊 ${result.data.game.votes} vote${result.data.game.votes !== 1 ? 's' : ''}`;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error loading winners:', error);
+            // Fallback to default text if API fails
+            const topicText = document.getElementById('topic-text');
+            const gameText = document.getElementById('game-text');
+            if (topicText) topicText.innerHTML = '"Purpose Over Pressure" — Finding your identity in Christ';
+            if (gameText) gameText.innerHTML = 'Human Knot Challenge + Ultimate Dodgeball';
+        }
+    }
+    
+    // Load winners when page loads
+    document.addEventListener('DOMContentLoaded', loadWinners);
+    
+    // Optional: Auto-refresh every 30 seconds to show live vote updates
+    setInterval(loadWinners, 30000);
+    </script>
   </body>
 </html>

@@ -68,7 +68,7 @@ function setupContactButton() {
     if (contactBtn) {
         contactBtn.addEventListener('click', () => {
             // Replace with your actual WhatsApp number
-            const whatsappNumber = '27781234567'; // South African format without +
+            const whatsappNumber = '27693741222'; 
             const message = encodeURIComponent('Hi! I\'m interested in joining Gonubie Baptist Youth. Can you share more info?');
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
             window.open(whatsappUrl, '_blank');
@@ -82,8 +82,7 @@ function setupContactButton() {
 function setupSocialIcons() {
     const socialLinks = {
         'fa-instagram': 'https://www.instagram.com/gonubiebaptistyouth/',
-        'fa-whatsapp': 'https://chat.whatsapp.com/your-invite-link', // Replace with your WhatsApp group link
-        'fa-discord': 'https://discord.gg/your-invite-link', // Replace with your Discord invite
+        'fa-whatsapp': '', //
         'fa-envelope': 'mailto:youth@gonubiebaptist.org.za'
     };
     
@@ -242,7 +241,7 @@ function setupFeatureCards() {
 }
 
 // ============================================
-// 9. COUNTDOWN TO NEXT FRIDAY (Optional)
+// 9. COUNTDOWN TO NEXT FRIDAY 
 // ============================================
 function updateFridayCountdown() {
     const now = new Date();
@@ -256,8 +255,6 @@ function updateFridayCountdown() {
     const hours = Math.floor((diff % (86400000)) / (3600000));
     const minutes = Math.floor((diff % 3600000) / 60000);
     
-    // Optional: Add to page if you want
-    // console.log(`Next youth: ${days}d ${hours}h ${minutes}m`);
 }
 
 // ============================================
@@ -273,8 +270,6 @@ function initHomepage() {
     setupFeatureCards();
     updateFridayCountdown();
     
-    // Optional: Log to console
-    console.log(' Gonubie Baptist Youth website loaded! Come join us Friday at 7PM!');
 }
 
 // Run when DOM is fully loaded

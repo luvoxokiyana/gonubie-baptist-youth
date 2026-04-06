@@ -92,7 +92,6 @@ $is_logged_in = isset($_SESSION['member_id']);
             <?php if ($is_logged_in): ?>
                 <div class="user-status">
                     <span><i class="fa-solid fa-circle-user"></i><?php echo htmlspecialchars($_SESSION['member_name'] ?? 'Member'); ?></span>
-                    <a href="logout.php"></a>
                 </div>
             <?php else: ?>
                 <a href="login.php?redirect=voting.php" style="color: #f0b90b;">

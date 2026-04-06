@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 require_once 'database.php';
 
 // Helper function to check if user is logged in
-function isLoggedIn() {
+function isLoggedIn()
+{
     return isset($_SESSION['member_id']);
 }
 
@@ -26,7 +27,8 @@ if (!$conn) {
     exit();
 }
 
-function getUserIP() {
+function getUserIP()
+{
     if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
         return $_SERVER['HTTP_CF_CONNECTING_IP'];
     }
@@ -37,7 +39,8 @@ function getUserIP() {
     return $_SERVER['REMOTE_ADDR'] ?? '';
 }
 
-function getDeviceFingerprint() {
+function getDeviceFingerprint()
+{
     $ip = getUserIP();
     $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
     $screen = $_POST['screen_resolution'] ?? '';
@@ -48,7 +51,7 @@ $device_id = getDeviceFingerprint();
 $action = $_GET['action'] ?? '';
 
 try {
-    switch($action) {
+    switch ($action) {
         case 'get_votes':
             // Anyone can see vote results
             $pollType = $_GET['poll'] ?? '';
@@ -70,16 +73,16 @@ try {
                 echo json_encode(['success' => false, 'error' => 'You must be logged in to vote']);
                 break;
             }
-            
+
             $input = json_decode(file_get_contents('php://input'), true);
             $pollType = $input['poll_type'] ?? '';
             $optionId = $input['option_id'] ?? '';
-            
+
             if (!$pollType || !$optionId) {
                 echo json_encode(['success' => false, 'error' => 'Missing parameters']);
                 break;
             }
-            
+
             $result = castVote($conn, $pollType, $optionId, $device_id);
             echo json_encode($result);
             break;
@@ -98,28 +101,45 @@ try {
                 echo json_encode(['success' => false, 'error' => 'You must be logged in to make suggestions']);
                 break;
             }
-            
+
             $input = json_decode(file_get_contents('php://input'), true);
             $text = trim($input['suggestion'] ?? '');
-            
+
             if (empty($text)) {
                 echo json_encode(['success' => false, 'error' => 'Suggestion cannot be empty']);
                 break;
             }
-            
+
             $stmt = $conn->prepare("INSERT INTO suggestions (suggestion_text, user_ip) VALUES (?, ?)");
             $stmt->execute([$text, $device_id]);
             echo json_encode(['success' => true, 'message' => 'Suggestion added!']);
             break;
 
+        case 'get_winners':
+            // Get the current leading topic and game
+            $topic = getWinningOption($conn, 'bible');
+            $game = getWinningOption($conn, 'game');
+            $event = getWinningOption($conn, 'event');
+
+            echo json_encode([
+                'success' => true,
+                'data' => [
+                    'topic' => $topic,
+                    'game' => $game,
+                    'event' => $event
+                ]
+            ]);
+            break;
+
         default:
             echo json_encode(['success' => false, 'error' => 'Invalid action']);
     }
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 
-function getPollData($conn, $pollType, $device_id) {
+function getPollData($conn, $pollType, $device_id)
+{
     $stmt = $conn->prepare("
         SELECT po.option_id, po.option_name, COUNT(v.id) as votes
         FROM poll_options po
@@ -130,11 +150,11 @@ function getPollData($conn, $pollType, $device_id) {
     ");
     $stmt->execute([$pollType]);
     $options = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    
+
     $stmt = $conn->prepare("SELECT voted_option_id FROM user_vote_status WHERE user_ip = ? AND poll_type = ?");
     $stmt->execute([$device_id, $pollType]);
     $userVote = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     return [
         'options' => $options,
         'has_voted' => $userVote !== false,
@@ -142,32 +162,63 @@ function getPollData($conn, $pollType, $device_id) {
     ];
 }
 
-function castVote($conn, $pollType, $optionId, $device_id) {
+function castVote($conn, $pollType, $optionId, $device_id)
+{
     $stmt = $conn->prepare("SELECT id FROM user_vote_status WHERE user_ip = ? AND poll_type = ?");
     $stmt->execute([$device_id, $pollType]);
     if ($stmt->fetch()) {
         return ['success' => false, 'error' => 'You have already voted on this poll'];
     }
-    
+
     $stmt = $conn->prepare("SELECT option_id FROM poll_options WHERE poll_type = ? AND option_id = ?");
     $stmt->execute([$pollType, $optionId]);
     if (!$stmt->fetch()) {
         return ['success' => false, 'error' => 'Invalid option'];
     }
-    
+
     $conn->beginTransaction();
     try {
         $stmt = $conn->prepare("INSERT INTO votes (poll_type, option_id, user_ip) VALUES (?, ?, ?)");
         $stmt->execute([$pollType, $optionId, $device_id]);
-        
+
         $stmt = $conn->prepare("INSERT INTO user_vote_status (user_ip, poll_type, voted_option_id) VALUES (?, ?, ?)");
         $stmt->execute([$device_id, $pollType, $optionId]);
-        
+
         $conn->commit();
         return ['success' => true, 'message' => 'Vote recorded!'];
-    } catch(Exception $e) {
+    } catch (Exception $e) {
         $conn->rollBack();
         return ['success' => false, 'error' => 'Failed to record vote'];
+    }
+}
+
+Function getWinningOption($conn, $pollType) {
+    $stmt = $conn->prepare("
+        SELECT po.option_name, COUNT(v.id) as votes
+        FROM poll_options po
+        LEFT JOIN votes v ON po.poll_type = v.poll_type AND po.option_id = v.option_id
+        WHERE po.poll_type = ?
+        GROUP BY po.option_id, po.option_name
+        ORDER BY votes DESC, po.display_order ASC
+        LIMIT 1
+    ");
+    $stmt->execute([$pollType]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($result && $result['votes'] > 0) {
+        return [
+            'name' => $result['option_name'],
+            'votes' => $result['votes']
+        ];
+    } else {
+        // No votes yet - return first option
+        $stmt = $conn->prepare("SELECT option_name FROM poll_options WHERE poll_type = ? ORDER BY display_order ASC LIMIT 1");
+        $stmt->execute([$pollType]);
+        $default = $stmt->fetch(PDO::FETCH_ASSOC);
+        return [
+            'name' => $default ? $default['option_name'] : 'TBD',
+            'votes' => 0
+        ];
     }
 }
 ?>
