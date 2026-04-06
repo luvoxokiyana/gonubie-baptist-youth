@@ -71,18 +71,17 @@
 .poll-options {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
     margin: 1.2rem 0;
 }
 
 .poll-option {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0.6rem 1rem;
+    flex-direction: column;
+    gap: 6px;
+    padding: 0.8rem 1rem;
     background: #faf8f2;
     border-radius: 12px;
-    cursor: pointer;
     transition: background 0.2s;
     border: 1px solid #e8e4d9;
 }
@@ -92,23 +91,43 @@
     border-color: #c9772e;
 }
 
-.poll-option input {
+.option-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.option-header input {
     width: 18px;
     height: 18px;
     cursor: pointer;
     accent-color: #c9772e;
 }
 
-.poll-option label {
+.option-header label {
     flex: 1;
     cursor: pointer;
     color: #5a5955;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 0.95rem;
 }
 
-.poll-option small {
+.option-header small {
     color: #c9772e;
     font-size: 0.7rem;
+    font-weight: normal;
+}
+
+.option-description {
+    margin-left: 1.8rem;
+    padding: 0.6rem 0.8rem;
+    background: #ffffff;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: #6b6a66;
+    line-height: 1.5;
+    border-left: 3px solid #c9772e;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .vote-btn {
@@ -124,7 +143,7 @@
     margin-top: 0.5rem;
 }
 
-.vote-btn:hover {
+.vote-btn:hover:not(:disabled) {
     background: #b15f1e;
     transform: scale(1.01);
 }
@@ -147,7 +166,7 @@
 .result-label {
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #5a5955;
     margin-bottom: 0.2rem;
 }
@@ -156,7 +175,7 @@
     background: #f0ede5;
     border-radius: 20px;
     overflow: hidden;
-    height: 24px;
+    height: 20px;
 }
 
 .progress-fill {
@@ -168,14 +187,14 @@
     justify-content: flex-end;
     padding-right: 8px;
     color: white;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: bold;
     transition: width 0.3s ease;
 }
 
 .total-votes {
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #8a8985;
     margin-top: 0.8rem;
 }
@@ -190,83 +209,7 @@
     margin-top: 1rem;
 }
 
-/* Option description styles */
-.option-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.25rem;
-}
-
-.option-header label {
-    font-weight: bold;
-}
-
-.option-description {
-    margin-left: 1.5rem;
-    margin-bottom: 0.75rem;
-    padding: 0.5rem 0.75rem;
-    background: #faf8f2;  /* Changed from dark */
-    border-radius: 8px;
-    font-size: 0.75rem;
-    color: #5a5955;  /* Changed from light */
-    line-height: 1.4;
-    border-left: 2px solid #c9772e;  /* Changed to match theme */
-}
-
-.poll-description-container {
-    margin: 0.5rem 0 1rem 1.5rem;
-    padding: 0.5rem 0.75rem;
-    background: #faf8f2;  /* Changed from dark */
-    border-radius: 8px;
-    font-size: 0.75rem;
-    color: #5a5955;  /* Changed from light */
-    line-height: 1.4;
-    border-left: 2px solid #c9772e;
-    display: none;
-}
-
-.poll-description-container i {
-    color: #c9772e;
-}
-
-.poll-description-container.game-rules {
-    border-left-color: #2ea043;
-}
-
-.poll-description-container {
-    margin: 0.5rem 0 1rem 1.5rem;
-    padding: 0.5rem 0.75rem;
-    background: #0d1117;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    color: #8b949e;
-    line-height: 1.4;
-    border-left: 2px solid #f0b90b;
-    display: none; /* Hidden by default, shown when option selected */
-}
-
-.poll-description-container.visible {
-    display: block;
-}
-
-.poll-description-container i {
-    color: #f0b90b;
-    margin-right: 0.25rem;
-}
-
-.poll-description-container.game-rules {
-    border-left-color: #2ea043;
-}
-
-/* Collapsible description on mobile */
-@media (max-width: 768px) {
-    .option-description {
-        font-size: 0.7rem;
-        padding: 0.4rem 0.6rem;
-    }
-}
-
+/* Suggestion box */
 .suggestion-box {
     background: #ffffff;
     border-radius: 20px;
@@ -312,6 +255,7 @@
     border-radius: 50px;
     color: white;
     cursor: pointer;
+    font-weight: 500;
 }
 
 .suggestion-input button:hover {
@@ -333,11 +277,16 @@
     color: #5a5955;
 }
 
+/* Responsive */
 @media (max-width: 700px) {
     .poll-grid {
         grid-template-columns: 1fr;
     }
     .voting-header h1 {
         font-size: 1.5rem;
+    }
+    .option-description {
+        margin-left: 1rem;
+        font-size: 0.7rem;
     }
 }

@@ -58,14 +58,13 @@ $is_logged_in = isset($_SESSION['member_id']);
         .user-status {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            background: #21262d00;
-            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+            padding: 0.3rem 0.8rem;
             border-radius: 50px;
         }
 
         .user-status span {
-            color: #e6edf300;
+            color: #e6edf3;
             font-size: 0.85rem;
         }
 
@@ -91,8 +90,9 @@ $is_logged_in = isset($_SESSION['member_id']);
         <div class="right-container">
             <?php if ($is_logged_in): ?>
                 <div class="user-status">
-                    <span><i
-                            class="fa-solid fa-circle-user"></i><?php echo htmlspecialchars($_SESSION['member_name'] ?? 'Member'); ?></span>
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span><?php echo htmlspecialchars($_SESSION['member_name'] ?? 'Member'); ?></span>
+                    <a href="logout.php"><i class="fa-solid fa-sign-out-alt"></i></a>
                 </div>
             <?php else: ?>
                 <a href="login.php?redirect=voting.php" style="color: #f0b90b;">
@@ -137,7 +137,6 @@ $is_logged_in = isset($_SESSION['member_id']);
                         <h2><i class="fa-solid fa-bible"></i> Next Bible Study</h2>
                         <div class="poll-description">What topic should we study next Friday?</div>
                         <div class="poll-options" id="bible-options"></div>
-                        <div id="bible-description" class="poll-description-container"></div>
                         <button class="vote-btn" id="vote-bible-btn">🗳️ Cast Vote</button>
                         <div class="results" id="bible-results"></div>
                         <div id="bible-voted-message"></div>
@@ -147,7 +146,6 @@ $is_logged_in = isset($_SESSION['member_id']);
                         <h2><i class="fa-solid fa-gamepad"></i> Next Game</h2>
                         <div class="poll-description">Which game do you want to play?</div>
                         <div class="poll-options" id="game-options"></div>
-                        <div id="game-description" class="poll-description-container"></div>
                         <button class="vote-btn" id="vote-game-btn">🎮 Cast Vote</button>
                         <div class="results" id="game-results"></div>
                         <div id="game-voted-message"></div>
@@ -157,7 +155,6 @@ $is_logged_in = isset($_SESSION['member_id']);
                         <h2><i class="fa-regular fa-calendar"></i> Future Event</h2>
                         <div class="poll-description">What event should we plan next month?</div>
                         <div class="poll-options" id="event-options"></div>
-                        <div id="event-description" class="poll-description-container"></div>
                         <button class="vote-btn" id="vote-event-btn">📅 Cast Vote</button>
                         <div class="results" id="event-results"></div>
                         <div id="event-voted-message"></div>
@@ -166,7 +163,7 @@ $is_logged_in = isset($_SESSION['member_id']);
 
                 <div class="suggestion-box">
                     <h3><i class="fa-regular fa-lightbulb"></i> Have an idea?</h3>
-                    <p style="color: #8b949e; font-size: 0.85rem;">Suggest a topic, game, or event for future polls!</p>
+                    <p style="color: #6b6a66; font-size: 0.85rem;">Suggest a topic, game, or event for future polls!</p>
                     <div class="suggestion-input">
                         <input type="text" id="suggestion-input"
                             placeholder="e.g., 'Bowling night' or 'Friendship Bible study'">

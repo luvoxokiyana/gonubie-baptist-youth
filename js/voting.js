@@ -1,4 +1,4 @@
-// js/voting.js - Updated to use backend API
+// js/voting.js - Updated to use backend API with always visible descriptions
 let votesData = {
     bible: { options: [], has_voted: false, user_choice: null },
     game: { options: [], has_voted: false, user_choice: null },
@@ -48,7 +48,7 @@ function renderPoll(pollType) {
 
     if (!optionsContainer || !poll) return;
 
-    // Render radio options with descriptions
+    // Render radio options with descriptions always visible
     optionsContainer.innerHTML = '';
     poll.options.forEach(opt => {
         const div = document.createElement('div');
@@ -60,16 +60,16 @@ function renderPoll(pollType) {
         
         div.innerHTML = `
             <div class="option-header">
-                <input type="radio" name="${pollType}_vote" value="${opt.option_id}" id="${opt.option_id}" ${isChecked ? 'checked' : ''}>
+                <input type="radio" name="${pollType}_vote" value="${opt.option_id}" id="${opt.option_id}" ${isChecked ? 'checked' : ''} ${poll.has_voted ? 'disabled' : ''}>
                 <label for="${opt.option_id}">${escapeHtml(opt.option_name)}</label>
                 ${isChecked ? '<small>✓ Your vote</small>' : ''}
             </div>
-            ${description ? `<div class="option-description">${escapeHtml(description).replace(/\n/g, '<br>')}</div>` : ''}
+            ${description ? `<div class="option-description">📖 ${escapeHtml(description).replace(/\n/g, '<br>')}</div>` : ''}
         `;
         optionsContainer.appendChild(div);
     });
 
-    // Rest of the function remains the same...
+    // Handle vote button state
     if (poll.has_voted) {
         const radios = optionsContainer.querySelectorAll('input');
         radios.forEach(radio => radio.disabled = true);
@@ -82,11 +82,12 @@ function renderPoll(pollType) {
         voteBtn.style.cursor = 'pointer';
     }
 
+    // Render results
     const totalVotes = poll.options.reduce((sum, opt) => sum + (opt.votes || 0), 0);
 
     if (totalVotes > 0) {
         resultsContainer.innerHTML = `
-            <div style="margin-bottom: 0.5rem; font-size: 0.75rem; color: #8b949e;">📊 Current Results:</div>
+            <div style="margin-bottom: 0.5rem; font-size: 0.75rem; color: #6b6a66;">📊 Current Results:</div>
             ${poll.options.map(opt => {
                 const percent = ((opt.votes || 0) / totalVotes) * 100;
                 return `
@@ -107,37 +108,13 @@ function renderPoll(pollType) {
         resultsContainer.innerHTML = '<div class="total-votes">✨ No votes yet. Be the first!</div>';
     }
 
+    // Show voted message
     if (poll.has_voted && poll.user_choice) {
         const selectedOption = poll.options.find(opt => opt.option_id === poll.user_choice);
         votedMessageDiv.innerHTML = `<div class="already-voted"><i class="fa-regular fa-circle-check"></i> You voted for: ${selectedOption ? escapeHtml(selectedOption.option_name) : 'something'}</div>`;
     } else {
         votedMessageDiv.innerHTML = '';
     }
-
-    document.querySelectorAll(`input[name="${pollType}_vote"]`).forEach(radio => {
-    // Remove existing listeners to avoid duplicates
-    radio.removeEventListener('change', radio._listener);
-    
-    const listener = (e) => {
-        const selectedId = e.target.value;
-        const selectedOption = poll.options.find(opt => opt.option_id === selectedId);
-        const descriptionContainer = document.getElementById(`${pollType}-description`);
-        
-        if (selectedOption && descriptionContainer) {
-            const description = selectedOption.game_rules || selectedOption.description;
-            if (description) {
-                descriptionContainer.innerHTML = `<i class="fa-regular fa-lightbulb"></i> ${escapeHtml(description).replace(/\n/g, '<br>')}`;
-                descriptionContainer.classList.add('visible');
-            } else {
-                descriptionContainer.innerHTML = '';
-                descriptionContainer.classList.remove('visible');
-            }
-        }
-    };
-    
-    radio.addEventListener('change', listener);
-    radio._listener = listener; // Store for cleanup
-});
 }
 
 function renderAllPolls() {
@@ -172,14 +149,13 @@ async function castVote(pollType) {
         
         if (result.success) {
             await loadData();
-            alert(`Vote recorded!`);
+            alert(`✅ Vote recorded!`);
         } else {
-            // Handle login required error - redirect to login
             if (result.error === 'You must be logged in to vote') {
                 alert('Please login to vote');
                 window.location.href = 'login.php?redirect=voting.php';
             } else {
-                alert(`${result.error}`);
+                alert(`❌ ${result.error}`);
             }
         }
     } catch (error) {
@@ -226,7 +202,7 @@ async function addSuggestion() {
             input.value = '';
             alert(`Thanks for your suggestion! We'll consider it for future polls.`);
         } else {
-            alert(`${result.error}`);
+            alert(`❌ ${result.error}`);
         }
     } catch (error) {
         console.error('Error adding suggestion:', error);
@@ -248,14 +224,17 @@ function escapeHtml(str) {
 document.addEventListener('DOMContentLoaded', () => {
     loadData();
 
-    // Vote buttons
-    document.getElementById('vote-bible-btn').addEventListener('click', () => castVote('bible'));
-    document.getElementById('vote-game-btn').addEventListener('click', () => castVote('game'));
-    document.getElementById('vote-event-btn').addEventListener('click', () => castVote('event'));
+    const bibleBtn = document.getElementById('vote-bible-btn');
+    const gameBtn = document.getElementById('vote-game-btn');
+    const eventBtn = document.getElementById('vote-event-btn');
+    const submitBtn = document.getElementById('submit-suggestion');
+    const suggestionInput = document.getElementById('suggestion-input');
 
-    // Suggestion button
-    document.getElementById('submit-suggestion').addEventListener('click', addSuggestion);
-    document.getElementById('suggestion-input').addEventListener('keypress', (e) => {
+    if (bibleBtn) bibleBtn.addEventListener('click', () => castVote('bible'));
+    if (gameBtn) gameBtn.addEventListener('click', () => castVote('game'));
+    if (eventBtn) eventBtn.addEventListener('click', () => castVote('event'));
+    if (submitBtn) submitBtn.addEventListener('click', addSuggestion);
+    if (suggestionInput) suggestionInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') addSuggestion();
     });
 });
