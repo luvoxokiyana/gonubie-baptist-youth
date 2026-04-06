@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="form-container">
-        <h2>👥 Create Youth Member Account</h2>
+        <h2>Create Youth Member Account</h2>
         <p>Create individual accounts for youth members</p>
         
         <?php if ($message): ?>
