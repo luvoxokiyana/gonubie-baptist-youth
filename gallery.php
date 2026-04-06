@@ -12,61 +12,35 @@ $is_logged_in = isset($_SESSION['member_id']);
     <link rel="stylesheet" href="css/gallery.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Additional styles for blur protection - add to existing CSS */
-        .gallery-card.protected {
-            position: relative;
-        }
-        
-        .gallery-card.protected .gallery-thumb {
-            filter: blur(20px);
+        /* Blur effect for non-logged in users */
+        body:not(.logged-in) .gallery-card img {
+            filter: blur(15px);
             transition: filter 0.3s;
         }
         
-        .gallery-card.protected .gallery-caption {
-            filter: blur(4px);
+        body:not(.logged-in) .gallery-card:hover img {
+            filter: blur(12px);
         }
         
-        .blur-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-            z-index: 10;
-            border-radius: 16px;
-            cursor: pointer;
+        /* Optional: slight blur on captions too */
+        body:not(.logged-in) .gallery-caption {
+            filter: blur(3px);
+            user-select: none;
         }
         
-        .blur-overlay i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .blur-overlay span {
-            font-size: 0.8rem;
-            background: #c9772e;
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            margin-top: 0.5rem;
-        }
-        
-        .blur-overlay:hover span {
-            background: #b15f1e;
-        }
-        
+        /* Login prompt banner */
         .login-prompt {
             text-align: center;
-            padding: 2rem;
+            padding: 1rem;
             background: #f5f3ee;
             border-radius: 16px;
             margin-bottom: 2rem;
+            border: 1px solid #e8e4d9;
+        }
+        
+        .login-prompt i {
+            color: #c9772e;
+            margin-right: 0.5rem;
         }
         
         .login-prompt a {
@@ -79,43 +53,35 @@ $is_logged_in = isset($_SESSION['member_id']);
             background: #c9772e;
             color: white;
             border: none;
-            padding: 0.5rem 1.5rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 50px;
             cursor: pointer;
             margin-left: 1rem;
+            font-size: 0.85rem;
         }
         
         .user-status {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             background: #f0ede5;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 1rem;
             border-radius: 50px;
         }
         
         .user-status span {
             color: #5a5955;
+            font-size: 0.85rem;
         }
         
         .user-status a {
             color: #c9772e;
             text-decoration: none;
         }
-        
-        @media (max-width: 700px) {
-            .blur-overlay i {
-                font-size: 1.5rem;
-            }
-            .blur-overlay span {
-                font-size: 0.7rem;
-                padding: 0.3rem 0.8rem;
-            }
-        }
     </style>
 </head>
 
-<body>
+<body class="<?php echo $is_logged_in ? 'logged-in' : ''; ?>">
     <div class="header">
         <div class="left-container"><span><i class="fa-solid fa-cross"></i> Gonubie Baptist Youth</span></div>
         <div class="middle-container">
@@ -129,7 +95,7 @@ $is_logged_in = isset($_SESSION['member_id']);
             <?php if ($is_logged_in): ?>
                 <div class="user-status">
                     <span><i class="fa-solid fa-user-check"></i> <?php echo htmlspecialchars($_SESSION['member_name'] ?? 'Member'); ?></span>
-                    <a href="logout.php"><i class="fa-solid fa-sign-out-alt"></i></a>
+                    <a href="logout.php"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
                 </div>
             <?php else: ?>
                 <a href="login.php?redirect=gallery.php" style="color: #c9772e;">
@@ -147,7 +113,7 @@ $is_logged_in = isset($_SESSION['member_id']);
                 <?php else: ?>
                     <div class="login-prompt">
                         <i class="fa-solid fa-lock"></i> Photos are blurred for privacy
-                        <a href="login.php?redirect=gallery.php"><button>Login to View Photos</button></a>
+                        <a href="login.php?redirect=gallery.php"><button>Login to View</button></a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -184,53 +150,21 @@ $is_logged_in = isset($_SESSION['member_id']);
         // Pass login status to JavaScript
         const IS_LOGGED_IN = <?php echo $is_logged_in ? 'true' : 'false'; ?>;
         
-        // Override the image click behavior in gallery.js
+        // Prevent lightbox from opening if not logged in
         document.addEventListener('DOMContentLoaded', function() {
-            // Wait for gallery to load, then add protection
-            setTimeout(function() {
-                protectImages();
-            }, 500);
-        });
-        
-        function protectImages() {
-            if (IS_LOGGED_IN) return;
-            
-            // Find all gallery cards and add blur protection
-            const cards = document.querySelectorAll('.gallery-card');
-            cards.forEach(card => {
-                if (!card.classList.contains('protected')) {
-                    card.classList.add('protected');
-                    
-                    // Add click-to-login overlay
-                    const img = card.querySelector('img');
-                    if (img && !card.querySelector('.blur-overlay')) {
-                        const overlay = document.createElement('div');
-                        overlay.className = 'blur-overlay';
-                        overlay.innerHTML = `
-                            <i class="fa-solid fa-lock"></i>
-                            <span>Login to view photo</span>
-                        `;
-                        overlay.onclick = function(e) {
-                            e.stopPropagation();
-                            window.location.href = 'login.php?redirect=gallery.php';
-                        };
-                        card.style.position = 'relative';
-                        card.appendChild(overlay);
+            if (!IS_LOGGED_IN) {
+                // Override the lightbox click behavior
+                document.addEventListener('click', function(e) {
+                    const thumb = e.target.closest('.gallery-thumb');
+                    if (thumb) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.location.href = 'login.php?redirect=gallery.php';
+                        return false;
                     }
-                }
-            });
-        }
-        
-        // Monitor for dynamically loaded images (load more)
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.addedNodes.length) {
-                    protectImages();
-                }
-            });
+                });
+            }
         });
-        
-        observer.observe(document.getElementById('masonryGrid'), { childList: true, subtree: true });
     </script>
 </body>
 
