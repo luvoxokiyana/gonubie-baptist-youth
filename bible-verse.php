@@ -34,7 +34,7 @@
         <div class="middle-container">
             <a href="index.php">home</a>
             <a href="past-lessons.php">past lessons</a>
-            <a href="bible-verse.php">bible verse</a>
+            <a href="bible-verse.php" class="active">bible verse</a>
             <a href="voting.php">voting</a>
             <a href="gallery.php">gallery</a>
         </div>

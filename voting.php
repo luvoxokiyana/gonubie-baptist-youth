@@ -96,7 +96,7 @@ $is_logged_in = isset($_SESSION['member_id']);
             <a href="index.php">home</a>
             <a href="past-lessons.php">past lessons</a>
             <a href="bible-verse.php">bible verse</a>
-            <a href="voting.php">voting</a>
+            <a href="voting.php" class="active">voting</a>
             <a href="gallery.php">gallery</a>
         </div>
         <div class="right-container">
