@@ -277,6 +277,29 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// ============================================
+// 4. SOCIAL ICONS (Footer)
+// ============================================
+function setupSocialIcons() {
+    const socialLinks = {
+        'fa-instagram': 'https://www.instagram.com/gonubiebaptistyouth/',
+        'fa-whatsapp': '', //
+        'fa-envelope': ''
+    };
+    
+    const socialIcons = document.querySelectorAll('.social-icons i');
+    socialIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            for (const [className, url] of Object.entries(socialLinks)) {
+                if (icon.classList.contains(className)) {
+                    window.open(url, '_blank');
+                    return;
+                }
+            }
+        });
+    });
+}
+
 // Load more button
 document.getElementById('loadMoreBtn').addEventListener('click', loadMoreImages);
 
