@@ -21,8 +21,8 @@ $is_logged_in = isset($_SESSION['member_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gonubie Baptist Youth - Gallery</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/gallery.css">
+    <link rel="stylesheet" href="css/main.css?v=1.0">
+    <link rel="stylesheet" href="css/gallery.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Blur effect for non-logged in users */
@@ -153,7 +153,7 @@ $is_logged_in = isset($_SESSION['member_id']);
         </div>
     </div>
 
-    <script src="js/gallery.js"></script>
+    <script src="js/gallery.js?v=1.0"></script>
     <script>
         // Pass login status to JavaScript
         const IS_LOGGED_IN = <?php echo $is_logged_in ? 'true' : 'false'; ?>;

@@ -21,8 +21,8 @@ $is_logged_in = isset($_SESSION['member_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gonubie Baptist Youth - Voting</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/voting.css">
+    <link rel="stylesheet" href="css/main.css?v=1.0">
+    <link rel="stylesheet" href="css/voting.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Login wall styles */
@@ -209,7 +209,7 @@ $is_logged_in = isset($_SESSION['member_id']);
             </div>
         </div>
 
-        <script src="js/voting.js"></script>
+        <script src="js/voting.js?v=1.0"></script>
     <?php endif; ?>
 </body>
 
