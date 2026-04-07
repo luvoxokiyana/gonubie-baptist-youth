@@ -17,7 +17,6 @@ if (!$conn) {
     exit();
 }
 
-// Read JSON input (NOT $_POST)
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!$input) {
@@ -31,33 +30,37 @@ $description = trim($input['description'] ?? '');
 $pdfFilename = $input['pdf_filename'] ?? '';
 $pdfBase64 = $input['pdf_data'] ?? '';
 
-if (empty($title)) {
-    echo json_encode(['success' => false, 'error' => 'Title is required']);
+if (empty($title) || empty($date) || empty($description) || empty($pdfBase64)) {
+    echo json_encode(['success' => false, 'error' => 'Missing required fields']);
     exit();
 }
 
-if (empty($date)) {
-    echo json_encode(['success' => false, 'error' => 'Date is required']);
-    exit();
+// Create uploads folder if it doesn't exist
+$uploadDir = __DIR__ . '/uploads/lessons/';
+if (!file_exists($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
 }
 
-if (empty($description)) {
-    echo json_encode(['success' => false, 'error' => 'Description is required']);
-    exit();
-}
+// Generate unique filename
+$uniqueFilename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $pdfFilename);
+$filePath = 'uploads/lessons/' . $uniqueFilename;
+$fullPath = $uploadDir . $uniqueFilename;
 
-if (empty($pdfBase64)) {
-    echo json_encode(['success' => false, 'error' => 'PDF data is required']);
-    exit();
-}
-
+// Save PDF to file
 $pdfData = base64_decode($pdfBase64);
+if (file_put_contents($fullPath, $pdfData) === false) {
+    echo json_encode(['success' => false, 'error' => 'Failed to save PDF file']);
+    exit();
+}
 
+// Save only the file path to database (not the PDF data)
 try {
-    $stmt = $conn->prepare("INSERT INTO lessons (title, lesson_date, description, pdf_filename, pdf_data) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$title, $date, $description, $pdfFilename, $pdfData]);
+    $stmt = $conn->prepare("INSERT INTO lessons (title, lesson_date, description, pdf_filename, pdf_filepath) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$title, $date, $description, $pdfFilename, $filePath]);
     echo json_encode(['success' => true, 'message' => 'Lesson uploaded successfully!']);
 } catch (PDOException $e) {
+    // Delete the file if database insert fails
+    unlink($fullPath);
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
 ?>

@@ -78,56 +78,8 @@ let currentPdfData = null;
 let currentPdfName = null;
 
 function viewLesson(id) {
-    const lesson = lessons.find(l => l.id === id);
-    if (!lesson) return;
-
-    const modal = document.getElementById('pdfModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const pdfContainer = document.getElementById('pdfContainer');
-    const downloadBtn = document.getElementById('downloadPdfBtn');
-
-    modalTitle.textContent = lesson.title;
-    currentPdfData = lesson.pdf_data;
-    currentPdfName = lesson.pdf_filename;
-
-    if (lesson.pdf_data) {
-        // Convert binary data to blob URL
-        const binaryData = atob(lesson.pdf_data);
-        const byteArray = new Uint8Array(binaryData.length);
-        for (let i = 0; i < binaryData.length; i++) {
-            byteArray[i] = binaryData.charCodeAt(i);
-        }
-        const blob = new Blob([byteArray], { type: 'application/pdf' });
-        const blobUrl = URL.createObjectURL(blob);
-        
-        pdfContainer.innerHTML = `
-            <iframe src="${blobUrl}" type="application/pdf"></iframe>
-        `;
-    } else {
-        pdfContainer.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #161b22; border-radius: 12px; text-align: center; padding: 2rem;">
-                <i class="fa-solid fa-file-pdf" style="font-size: 4rem; color: #1a5c3a; margin-bottom: 1rem;"></i>
-                <p style="color: #8b949e;">PDF slideshow not yet uploaded for this lesson.</p>
-            </div>
-        `;
-    }
-
-    if (lesson.pdf_data) {
-        downloadBtn.onclick = () => {
-            const link = document.createElement('a');
-            const blobUrl = pdfContainer.querySelector('iframe')?.src;
-            if (blobUrl) {
-                link.href = blobUrl;
-                link.download = currentPdfName || `${lesson.title}.pdf`;
-                link.click();
-            }
-        };
-        downloadBtn.style.display = 'inline-flex';
-    } else {
-        downloadBtn.style.display = 'none';
-    }
-
-    modal.style.display = 'block';
+    // Just open the view-lesson.php which will serve the PDF
+    window.open(`view-lesson.php?id=${id}`, '_blank');
 }
 
 // Upload lesson

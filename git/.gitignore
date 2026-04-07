@@ -16,7 +16,7 @@ login.php
 
 # Uploaded content
 images/gallery/
-uploads/
+uploads/lessons/
 
 # Local images (not the folder structure)
 *.jpg
