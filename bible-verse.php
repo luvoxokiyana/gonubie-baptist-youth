@@ -2,6 +2,19 @@
 <html lang="en">
 
 <head>
+    <meta name="description"
+        content="Gonubie Baptist Youth - Youth group for grades 7-12 in Gonubie, South Africa. Friday night Bible studies, games, events, and community.">
+    <meta name="keywords"
+        content="youth group, bible study, Gonubie Baptist, Christian youth, church youth, youth events, South Africa youth">
+    <meta name="author" content="Gonubie Baptist Youth">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Gonubie Baptist Youth">
+    <meta property="og:description" content="Youth group events, Bible studies, and community in Gonubie">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://gonubieyouth.ddns.net/">
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gonubie Baptist Youth - Daily Verse</title>
@@ -72,7 +85,7 @@
         </div>
     </div>
 
-<script src="js/bible-verses.js"></script>    
+    <script src="js/bible-verses.js"></script>
 </body>
 
 </html>

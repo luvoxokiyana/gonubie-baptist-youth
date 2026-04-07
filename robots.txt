@@ -1,0 +1,15 @@
+# robots.txt
+User-agent: *
+Allow: /
+Sitemap: http://gonubieyouth.ddns.net/sitemap.xml
+
+# Don't index login/admin pages
+Disallow: /login.php
+Disallow: /logout.php
+Disallow: /api.php
+Disallow: /database.php
+Disallow: /create_account.php
+Disallow: /get-images.php
+Disallow: /hash_password.php
+Disallow: /test.php
+Disallow: /upload.php
