@@ -1,20 +1,9 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 session_start();
-
-// Debug: Read raw input
-$rawInput = file_get_contents('php://input');
-file_put_contents('debug_log.txt', "RAW INPUT: " . $rawInput . "\n", FILE_APPEND);
-file_put_contents('debug_log.txt', "POST: " . print_r($_POST, true) . "\n", FILE_APPEND);
-file_put_contents('debug_log.txt', "FILES: " . print_r($_FILES, true) . "\n", FILE_APPEND);
-file_put_contents('debug_log.txt', "CONTENT_TYPE: " . ($_SERVER['CONTENT_TYPE'] ?? 'not set') . "\n\n", FILE_APPEND);
-
 header('Content-Type: application/json');
 
-// Check if user is logged in AND has leader role
 if (!isset($_SESSION['member_role']) || $_SESSION['member_role'] !== 'leader') {
-    echo json_encode(['success' => false, 'error' => 'Unauthorized. Only youth leaders can upload lessons.']);
+    echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit();
 }
 
@@ -28,22 +17,19 @@ if (!$conn) {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+// Read JSON input (NOT $_POST)
+$input = json_decode(file_get_contents('php://input'), true);
+
+if (!$input) {
+    echo json_encode(['success' => false, 'error' => 'No JSON data received']);
     exit();
 }
 
-// Debug: Log what we received
-error_log('POST data: ' . print_r($_POST, true));
-error_log('FILES data: ' . print_r($_FILES, true));
-
-// Get form data - NOTE: The field names must match what JS sends
-$title = isset($_POST['title']) ? trim($_POST['title']) : '';
-$date = isset($_POST['date']) ? trim($_POST['date']) : '';
-$description = isset($_POST['description']) ? trim($_POST['description']) : '';
-
-// Debug: Log extracted values
-error_log("Title: '$title', Date: '$date', Description: '$description'");
+$title = trim($input['title'] ?? '');
+$date = trim($input['date'] ?? '');
+$description = trim($input['description'] ?? '');
+$pdfFilename = $input['pdf_filename'] ?? '';
+$pdfBase64 = $input['pdf_data'] ?? '';
 
 if (empty($title)) {
     echo json_encode(['success' => false, 'error' => 'Title is required']);
@@ -60,42 +46,17 @@ if (empty($description)) {
     exit();
 }
 
-// Check if file was uploaded
-if (!isset($_FILES['pdf']) || $_FILES['pdf']['error'] !== UPLOAD_ERR_OK) {
-    $errorCode = isset($_FILES['pdf']) ? $_FILES['pdf']['error'] : 'No file';
-    echo json_encode(['success' => false, 'error' => "PDF upload failed. Code: $errorCode"]);
+if (empty($pdfBase64)) {
+    echo json_encode(['success' => false, 'error' => 'PDF data is required']);
     exit();
 }
 
-// Check file type
-$finfo = finfo_open(FILEINFO_MIME_TYPE);
-$mimeType = finfo_file($finfo, $_FILES['pdf']['tmp_name']);
-finfo_close($finfo);
+$pdfData = base64_decode($pdfBase64);
 
-if ($mimeType !== 'application/pdf') {
-    echo json_encode(['success' => false, 'error' => 'File must be a PDF. Detected: ' . $mimeType]);
-    exit();
-}
-
-// Read PDF file
-$pdfData = file_get_contents($_FILES['pdf']['tmp_name']);
-if ($pdfData === false) {
-    echo json_encode(['success' => false, 'error' => 'Failed to read PDF file']);
-    exit();
-}
-
-$pdfFilename = $_FILES['pdf']['name'];
-
-// Insert into database
 try {
     $stmt = $conn->prepare("INSERT INTO lessons (title, lesson_date, description, pdf_filename, pdf_data) VALUES (?, ?, ?, ?, ?)");
-    $result = $stmt->execute([$title, $date, $description, $pdfFilename, $pdfData]);
-    
-    if ($result) {
-        echo json_encode(['success' => true, 'message' => 'Lesson uploaded successfully!']);
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Database insert failed']);
-    }
+    $stmt->execute([$title, $date, $description, $pdfFilename, $pdfData]);
+    echo json_encode(['success' => true, 'message' => 'Lesson uploaded successfully!']);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }

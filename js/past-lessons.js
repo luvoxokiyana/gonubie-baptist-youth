@@ -147,34 +147,46 @@ async function uploadLesson() {
         return;
     }
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('date', date);
-    formData.append('description', description);
-    formData.append('pdf', pdfInput.files[0]);
+    // Read PDF as base64
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+        const pdfBase64 = e.target.result.split(',')[1]; // Remove data:application/pdf;base64,
+        
+        const data = {
+            title: title,
+            date: date,
+            description: description,
+            pdf_filename: pdfInput.files[0].name,
+            pdf_data: pdfBase64
+        };
 
-    try {
-        const response = await fetch('upload-lesson.php', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            alert('Lesson uploaded successfully!');
-            document.getElementById('lessonTitle').value = '';
-            document.getElementById('lessonDate').value = '';
-            document.getElementById('lessonDesc').value = '';
-            document.getElementById('lessonPDF').value = '';
-            await loadLessons();
-        } else {
-            alert('Error: ' + result.error);
+        try {
+            const response = await fetch('upload-lesson.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('Lesson uploaded successfully!');
+                document.getElementById('lessonTitle').value = '';
+                document.getElementById('lessonDate').value = '';
+                document.getElementById('lessonDesc').value = '';
+                document.getElementById('lessonPDF').value = '';
+                await loadLessons();
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (error) {
+            console.error('Error uploading lesson:', error);
+            alert('An error occurred. Please try again.');
         }
-    } catch (error) {
-        console.error('Error uploading lesson:', error);
-        alert('An error occurred. Please try again.');
-    }
+    };
+    reader.readAsDataURL(pdfInput.files[0]);
 }
 
 // Modal close handlers
