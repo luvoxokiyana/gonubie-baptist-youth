@@ -53,7 +53,7 @@ function setupCTAButton() {
         ctaBtn.addEventListener('click', () => {
             // Show a nice modal or alert with details
             showNotification(
-                ' This Friday at GBY \n\n Topic: "Purpose Over Pressure"\n Game: Human Knot Challenge + Ultimate Dodgeball\n⏰ Time: 7PM\n📍 Location: Gonubie Baptist Church Hall\n\nBring a friend! 🔥',
+                ' This Friday at GBY \n\n Topic: "Purpose Over Pressure"\n Game: Human Knot Challenge + Ultimate Dodgeball\n Time: 7PM\n Location: Gonubie Baptist Church Hall\n\nBring a friend! ',
                 'info'
             );
         });
@@ -83,7 +83,7 @@ function setupSocialIcons() {
     const socialLinks = {
         'fa-instagram': 'https://www.instagram.com/gonubiebaptistyouth/',
         'fa-whatsapp': '', //
-        'fa-envelope': 'mailto:youth@gonubiebaptist.org.za'
+        'fa-envelope': ''
     };
     
     const socialIcons = document.querySelectorAll('.social-icons i');
@@ -225,9 +225,9 @@ function setupEventHoverEffects() {
 function setupFeatureCards() {
     const features = document.querySelectorAll('.feature');
     const featureMessages = {
-        'Community': 'Join our small groups and make real friends who will walk with you through life! 🙌',
-        'Faith': 'Engaging worship, relevant Bible talks, and opportunities to grow in your relationship with God. ✝️',
-        'Fun': 'Epic games, lock-ins, camps, and events you won\'t want to miss! 🎮'
+        'Community': 'Join our small groups and make real friends who will walk with you through life! ',
+        'Faith': 'Engaging worship, relevant Bible talks, and opportunities to grow in your relationship with God. ',
+        'Fun': 'Epic games, lock-ins, camps, and events you won\'t want to miss! '
     };
     
     features.forEach(feature => {

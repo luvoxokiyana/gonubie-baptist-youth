@@ -249,6 +249,7 @@ $api_url = 'api.php';
     // Optional: Auto-refresh every 30 seconds to show live vote updates
     setInterval(loadWinners, 30000);
   </script>
+  <script src="js/home.js?v=1.0"></script>
 </body>
 
 </html>
