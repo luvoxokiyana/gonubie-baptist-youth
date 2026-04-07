@@ -19,6 +19,7 @@ $is_logged_in = isset($_SESSION['member_id']);
     <meta property="og:url" content="http://gonubieyouth.ddns.net/">
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gonubie Baptist Youth - Gallery</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/gallery.css">
