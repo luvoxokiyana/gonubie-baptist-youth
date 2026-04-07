@@ -91,8 +91,8 @@ $is_leader = isset($_SESSION['member_role']) && $_SESSION['member_role'] === 'le
             <a href="index.php">home</a>
             <a href="past-lessons.php" class="active">past lessons</a>
             <a href="bible-verse.php">bible verse</a>
-            <a href="gallery.php">gallery</a>
             <a href="voting.php">voting</a>
+            <a href="gallery.php">gallery</a>
         </div>
         <div class="right-container">
             <?php if ($is_logged_in): ?>
