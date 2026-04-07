@@ -13,3 +13,5 @@ Disallow: /get-images.php
 Disallow: /hash_password.php
 Disallow: /test.php
 Disallow: /upload.php
+Disallow: /get-lesson.php
+Disallow: /view-lesson.php

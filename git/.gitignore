@@ -3,6 +3,8 @@ database.php
 
 # API files
 api.php
+get-lesson.php
+view-lesson.php
 
 # Account creation
 create_account.php

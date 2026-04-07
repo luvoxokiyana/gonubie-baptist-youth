@@ -54,8 +54,15 @@ $api_url = 'api.php';
       <a href="gallery.php">gallery</a>
     </div>
     <div class="right-container">
-      <i class="fa-solid fa-circle-user"></i>
-    </div>
+            <?php if ($is_logged_in): ?>
+                <div class="user-status">
+                    <i class="fa-solid fa-circle-user"></i>
+                </div>
+            <?php else: ?>
+                <a href="login.php?redirect=voting.php" style="color: #f0b90b;">
+                    <i class="fa-solid fa-circle-user"></i>
+                </a>
+            <?php endif; ?>
   </div>
 
   <!-- Hero Section -->
