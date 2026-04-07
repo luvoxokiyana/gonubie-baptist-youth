@@ -1,69 +1,23 @@
-// past-lessons.js - Database version with role-based upload access
+// past-lessons.js - Complete version with modal PDF viewer
 
 let lessons = [];
 
 // Load lessons from server
-async function uploadLesson() {
-    const title = document.getElementById('lessonTitle').value;
-    const date = document.getElementById('lessonDate').value;
-    const description = document.getElementById('lessonDesc').value;
-    const pdfInput = document.getElementById('lessonPDF');
-
-    console.log('Title:', title);
-    console.log('Date:', date);
-    console.log('Description:', description);
-    console.log('PDF:', pdfInput.files[0]?.name);
-
-    if (!title || !date || !description) {
-        alert('Please fill in all fields');
-        return;
-    }
-
-    if (pdfInput.files.length === 0) {
-        alert('Please select a PDF file');
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('date', date);
-    formData.append('description', description);
-    formData.append('pdf', pdfInput.files[0]);
-
-    // Debug: Log FormData contents
-    for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-    }
-
+async function loadLessons() {
     try {
-        const response = await fetch('upload-lesson.php', {
-            method: 'POST',
-            body: formData
-            
-        });
+        const response = await fetch('get-lessons.php');
+        const result = await response.json();
         
-        const text = await response.text();
-        console.log('Raw response:', text);
-        
-        try {
-            const result = JSON.parse(text);
-            if (result.success) {
-                alert('Lesson uploaded successfully!');
-                document.getElementById('lessonTitle').value = '';
-                document.getElementById('lessonDate').value = '';
-                document.getElementById('lessonDesc').value = '';
-                document.getElementById('lessonPDF').value = '';
-                await loadLessons();
-            } else {
-                alert('Error: ' + result.error);
-            }
-        } catch (e) {
-            console.error('JSON parse error:', e);
-            alert('Server error. Check console for details.');
+        if (result.success) {
+            lessons = result.lessons;
+            renderLessons();
+        } else {
+            console.error('Failed to load lessons:', result.error);
+            renderEmptyState();
         }
     } catch (error) {
-        console.error('Error uploading lesson:', error);
-        alert('An error occurred. Please try again.');
+        console.error('Error loading lessons:', error);
+        renderEmptyState();
     }
 }
 
@@ -120,12 +74,63 @@ function escapeHtml(str) {
     });
 }
 
+let currentPdfData = null;
+let currentPdfName = null;
+
 function viewLesson(id) {
-    // Open PDF in new tab
-    window.open(`view-lesson.php?id=${id}`, '_blank');
+    const lesson = lessons.find(l => l.id === id);
+    if (!lesson) return;
+
+    const modal = document.getElementById('pdfModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const pdfContainer = document.getElementById('pdfContainer');
+    const downloadBtn = document.getElementById('downloadPdfBtn');
+
+    modalTitle.textContent = lesson.title;
+    currentPdfData = lesson.pdf_data;
+    currentPdfName = lesson.pdf_filename;
+
+    if (lesson.pdf_data) {
+        // Convert binary data to blob URL
+        const binaryData = atob(lesson.pdf_data);
+        const byteArray = new Uint8Array(binaryData.length);
+        for (let i = 0; i < binaryData.length; i++) {
+            byteArray[i] = binaryData.charCodeAt(i);
+        }
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        
+        pdfContainer.innerHTML = `
+            <iframe src="${blobUrl}" type="application/pdf"></iframe>
+        `;
+    } else {
+        pdfContainer.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: #161b22; border-radius: 12px; text-align: center; padding: 2rem;">
+                <i class="fa-solid fa-file-pdf" style="font-size: 4rem; color: #1a5c3a; margin-bottom: 1rem;"></i>
+                <p style="color: #8b949e;">PDF slideshow not yet uploaded for this lesson.</p>
+            </div>
+        `;
+    }
+
+    if (lesson.pdf_data) {
+        downloadBtn.onclick = () => {
+            const link = document.createElement('a');
+            const blobUrl = pdfContainer.querySelector('iframe')?.src;
+            if (blobUrl) {
+                link.href = blobUrl;
+                link.download = currentPdfName || `${lesson.title}.pdf`;
+                link.click();
+            }
+        };
+        downloadBtn.style.display = 'inline-flex';
+    } else {
+        downloadBtn.style.display = 'none';
+    }
+
+    modal.style.display = 'block';
 }
 
-// Upload lesson - only called if IS_LEADER is true
+// Upload lesson
 async function uploadLesson() {
     const title = document.getElementById('lessonTitle').value;
     const date = document.getElementById('lessonDate').value;
@@ -158,12 +163,10 @@ async function uploadLesson() {
         
         if (result.success) {
             alert('Lesson uploaded successfully!');
-            // Clear form
             document.getElementById('lessonTitle').value = '';
             document.getElementById('lessonDate').value = '';
             document.getElementById('lessonDesc').value = '';
             document.getElementById('lessonPDF').value = '';
-            // Reload lessons
             await loadLessons();
         } else {
             alert('Error: ' + result.error);
@@ -173,6 +176,23 @@ async function uploadLesson() {
         alert('An error occurred. Please try again.');
     }
 }
+
+// Modal close handlers
+const closeBtn = document.querySelector('.close-modal');
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        document.getElementById('pdfModal').style.display = 'none';
+        document.getElementById('pdfContainer').innerHTML = '';
+    });
+}
+
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('pdfModal');
+    if (e.target === modal) {
+        modal.style.display = 'none';
+        document.getElementById('pdfContainer').innerHTML = '';
+    }
+});
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
