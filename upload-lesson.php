@@ -2,6 +2,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
+
+// Debug: Read raw input
+$rawInput = file_get_contents('php://input');
+file_put_contents('debug_log.txt', "RAW INPUT: " . $rawInput . "\n", FILE_APPEND);
+file_put_contents('debug_log.txt', "POST: " . print_r($_POST, true) . "\n", FILE_APPEND);
+file_put_contents('debug_log.txt', "FILES: " . print_r($_FILES, true) . "\n", FILE_APPEND);
+file_put_contents('debug_log.txt', "CONTENT_TYPE: " . ($_SERVER['CONTENT_TYPE'] ?? 'not set') . "\n\n", FILE_APPEND);
+
 header('Content-Type: application/json');
 
 // Check if user is logged in AND has leader role

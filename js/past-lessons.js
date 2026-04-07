@@ -3,21 +3,67 @@
 let lessons = [];
 
 // Load lessons from server
-async function loadLessons() {
+async function uploadLesson() {
+    const title = document.getElementById('lessonTitle').value;
+    const date = document.getElementById('lessonDate').value;
+    const description = document.getElementById('lessonDesc').value;
+    const pdfInput = document.getElementById('lessonPDF');
+
+    console.log('Title:', title);
+    console.log('Date:', date);
+    console.log('Description:', description);
+    console.log('PDF:', pdfInput.files[0]?.name);
+
+    if (!title || !date || !description) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    if (pdfInput.files.length === 0) {
+        alert('Please select a PDF file');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('date', date);
+    formData.append('description', description);
+    formData.append('pdf', pdfInput.files[0]);
+
+    // Debug: Log FormData contents
+    for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+    }
+
     try {
-        const response = await fetch('get-lessons.php');
-        const result = await response.json();
+        const response = await fetch('upload-lesson.php', {
+            method: 'POST',
+            body: formData
+            
+        });
         
-        if (result.success) {
-            lessons = result.lessons;
-            renderLessons();
-        } else {
-            console.error('Failed to load lessons:', result.error);
-            renderEmptyState();
+        const text = await response.text();
+        console.log('Raw response:', text);
+        
+        try {
+            const result = JSON.parse(text);
+            if (result.success) {
+                alert('Lesson uploaded successfully!');
+                document.getElementById('lessonTitle').value = '';
+                document.getElementById('lessonDate').value = '';
+                document.getElementById('lessonDesc').value = '';
+                document.getElementById('lessonPDF').value = '';
+                await loadLessons();
+            } else {
+                alert('Error: ' + result.error);
+            }
+        } catch (e) {
+            console.error('JSON parse error:', e);
+            alert('Server error. Check console for details.');
         }
     } catch (error) {
-        console.error('Error loading lessons:', error);
-        renderEmptyState();
+        console.error('Error uploading lesson:', error);
+        alert('An error occurred. Please try again.');
     }
 }
 
