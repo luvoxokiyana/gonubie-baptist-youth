@@ -105,86 +105,87 @@ $is_leader = isset($_SESSION['member_role']) && $_SESSION['member_role'] === 'le
                 </a>
             <?php endif; ?>
         </div>
+    </div>
 
-        <div class="lessons-page">
-            <div class="container">
-                <div class="lessons-header">
-                    <h1><i class="fa-solid fa-chalkboard-user"></i> Past Lessons</h1>
-                    <p>Catch up on messages you missed or review your favorites</p>
-                </div>
+    <div class="lessons-page">
+        <div class="container">
+            <div class="lessons-header">
+                <h1><i class="fa-solid fa-chalkboard-user"></i> Past Lessons</h1>
+                <p>Catch up on messages you missed or review your favorites</p>
+            </div>
 
-                <!-- Upload Section - ONLY SHOWN TO LEADERS -->
-                <?php if ($is_leader): ?>
-                    <div class="upload-section" id="uploadSection">
-                        <h3><i class="fa-solid fa-cloud-upload-alt"></i> Upload New Lesson (PDF)</h3>
-                        <div class="upload-form">
-                            <div class="form-group">
-                                <label>Lesson Title</label>
-                                <input type="text" id="lessonTitle" placeholder="e.g., Finding Your Purpose">
-                            </div>
-                            <div class="form-group">
-                                <label>Date</label>
-                                <input type="date" id="lessonDate">
-                            </div>
-                            <div class="form-group">
-                                <label>Description / Key Verses</label>
-                                <textarea id="lessonDesc" rows="3"
-                                    placeholder="Brief summary, key takeaways, or main Bible verses..."></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Upload PDF Slideshow</label>
-                                <input type="file" id="lessonPDF" accept="application/pdf">
-                                <small style="color: #8b949e;">Upload the PDF slideshow from the lesson</small>
-                            </div>
-                            <button class="upload-submit" id="uploadLessonBtn"><i class="fa-solid fa-upload"></i> Upload
-                                Lesson</button>
+            <!-- Upload Section - ONLY SHOWN TO LEADERS -->
+            <?php if ($is_leader): ?>
+                <div class="upload-section" id="uploadSection">
+                    <h3><i class="fa-solid fa-cloud-upload-alt"></i> Upload New Lesson (PDF)</h3>
+                    <div class="upload-form">
+                        <div class="form-group">
+                            <label>Lesson Title</label>
+                            <input type="text" id="lessonTitle" placeholder="e.g., Finding Your Purpose">
                         </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="lessonDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Description / Key Verses</label>
+                            <textarea id="lessonDesc" rows="3"
+                                placeholder="Brief summary, key takeaways, or main Bible verses..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload PDF Slideshow</label>
+                            <input type="file" id="lessonPDF" accept="application/pdf">
+                            <small style="color: #8b949e;">Upload the PDF slideshow from the lesson</small>
+                        </div>
+                        <button class="upload-submit" id="uploadLessonBtn"><i class="fa-solid fa-upload"></i> Upload
+                            Lesson</button>
                     </div>
-                <?php endif; ?>
+                </div>
+            <?php endif; ?>
 
-                <!-- Lessons Grid -->
-                <div class="lessons-grid" id="lessonsGrid">
-                    <div class="empty-lessons">
-                        <i class="fa-regular fa-folder-open"></i>
-                        <p>Loading lessons...</p>
-                    </div>
+            <!-- Lessons Grid -->
+            <div class="lessons-grid" id="lessonsGrid">
+                <div class="empty-lessons">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <p>Loading lessons...</p>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Modal for PDF viewer -->
-        <div id="pdfModal" class="modal">
-            <div class="modal-content">
-                <span class="close-modal">&times;</span>
-                <h3 class="modal-title" id="modalTitle"></h3>
-                <div class="pdf-container" id="pdfContainer">
-                    <!-- PDF embed will go here -->
-                </div>
-                <div style="text-align: center;">
-                    <button class="download-pdf-btn" id="downloadPdfBtn"><i class="fa-solid fa-download"></i> Download
-                        PDF</button>
+    <!-- Modal for PDF viewer -->
+    <div id="pdfModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <div class="pdf-container" id="pdfContainer">
+                <!-- PDF embed will go here -->
+            </div>
+            <div style="text-align: center;">
+                <button class="download-pdf-btn" id="downloadPdfBtn"><i class="fa-solid fa-download"></i> Download
+                    PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Gonubie Baptist Youth</p>
+                <div class="social-icons">
+                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <i class="fa-solid fa-envelope"></i>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <p>&copy; 2026 Gonubie Baptist Youth</p>
-                    <div class="social-icons">
-                        <i class="fa-brands fa-instagram"></i>
-                        <i class="fa-brands fa-whatsapp"></i>
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script src="js/past-lessons.js"></script>
-        <script>
-            // Pass PHP variables to JavaScript
-            const IS_LEADER = <?php echo $is_leader ? 'true' : 'false'; ?>;
-        </script>
+    <script src="js/past-lessons.js"></script>
+    <script>
+        // Pass PHP variables to JavaScript
+        const IS_LEADER = <?php echo $is_leader ? 'true' : 'false'; ?>;
+    </script>
 </body>
 
 </html>

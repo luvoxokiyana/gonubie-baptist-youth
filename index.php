@@ -64,6 +64,7 @@ $api_url = 'api.php';
                 </a>
             <?php endif; ?>
   </div>
+  </div>
 
   <!-- Hero Section -->
   <div class="landing-page">
