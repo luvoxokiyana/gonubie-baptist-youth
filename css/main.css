@@ -143,6 +143,129 @@ body {
     transform: scale(1.02);
 }
 
+/* Profile Dropdown Menu */
+.right-container {
+    position: relative;
+}
+
+.profile-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-trigger {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    z-index: 1000;
+    border: 1px solid #e8e4d9;
+    overflow: hidden;
+}
+
+.profile-dropdown.active .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #5a5955;
+    text-decoration: none;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background: #f0ede5;
+    color: #c9772e;
+}
+
+.dropdown-menu a i,
+.dropdown-menu button i {
+    width: 20px;
+    color: #c9772e;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e8e4d9;
+    margin: 0.25rem 0;
+}
+
+.dropdown-user-info {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e8e4d9;
+    margin-bottom: 0.25rem;
+}
+
+.dropdown-user-info .user-name {
+    font-weight: 600;
+    color: #2c2b28;
+    font-size: 0.85rem;
+}
+
+.dropdown-user-info .user-role {
+    font-size: 0.7rem;
+    color: #c9772e;
+    margin-top: 0.2rem;
+}
+
+/* Mobile dropdown adjustment */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+    }
+    
+    .profile-dropdown.active .dropdown-menu {
+        transform: translateY(0);
+    }
+    
+    /* Dark overlay when dropdown is open on mobile */
+    body.dropdown-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+}
+
 /* Responsive header */
 @media (max-width: 768px) {
     .header {

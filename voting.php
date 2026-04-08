@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start(); included in header.php
 $is_logged_in = isset($_SESSION['member_id']);
 ?>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $is_logged_in = isset($_SESSION['member_id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gonubie Baptist Youth - Voting</title>
-    <link rel="stylesheet" href="css/main.css?v=1.0">
+    <link rel="stylesheet" href="css/main.css?v=2.0">
     <link rel="stylesheet" href="css/voting.css?v=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -88,29 +88,7 @@ $is_logged_in = isset($_SESSION['member_id']);
 </head>
 
 <body>
-    <div class="header">
-        <div class="left-container">
-            <span><i class="fa-solid fa-cross"></i> Gonubie Baptist Youth</span>
-        </div>
-        <div class="middle-container">
-            <a href="index.php">home</a>
-            <a href="past-lessons.php">past lessons</a>
-            <a href="bible-verse.php">bible verse</a>
-            <a href="voting.php" class="active">voting</a>
-            <a href="gallery.php">gallery</a>
-        </div>
-        <div class="right-container">
-            <?php if ($is_logged_in): ?>
-                <div class="user-status">
-                    <i class="fa-solid fa-circle-user"></i>
-                </div>
-            <?php else: ?>
-                <a href="login.php?redirect=voting.php" style="color: #f0b90b;">
-                    <i class="fa-solid fa-circle-user"></i>
-                </a>
-            <?php endif; ?>
-        </div>
-    </div>
+   <?php include __DIR__ . '/inc/header.php'; ?>
 
     <?php if (!$is_logged_in): ?>
         <div class="login-wall">
@@ -120,18 +98,7 @@ $is_logged_in = isset($_SESSION['member_id']);
             <a href="login.php?redirect=voting.php"><button>🔑 Login to Vote</button></a>
         </div>
 
-        <div class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <p>&copy; 2026 Gonubie Baptist Youth</p>
-                    <div class="social-icons">
-                        <i class="fa-brands fa-instagram"></i>
-                        <i class="fa-brands fa-whatsapp"></i>
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php include __DIR__ . '/inc/footer.php'; ?>
     <?php else: ?>
         <div class="voting-page">
             <div class="container">
@@ -196,18 +163,7 @@ $is_logged_in = isset($_SESSION['member_id']);
             </div>
         </div>
 
-        <div class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <p>&copy; 2026 Gonubie Baptist Youth</p>
-                    <div class="social-icons">
-                        <i class="fa-brands fa-instagram"></i>
-                        <i class="fa-brands fa-whatsapp"></i>
-                        <i class="fa-solid fa-envelope"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+          <?php include __DIR__ . '/inc/footer.php'; ?>
 
         <script src="js/voting.js?v=1.0"></script>
     <?php endif; ?>
