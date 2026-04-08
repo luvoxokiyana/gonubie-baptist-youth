@@ -31,7 +31,13 @@ $member_role = $_SESSION['member_role'] ?? '';
                         <div class="user-role"><?php echo htmlspecialchars($member_role); ?></div>
                     </div>
                     <div class="dropdown-divider"></div>
-                    <a href="/FAQ.php"><i class="fa-regular fa-circle-question"></i> FAQ</a>
+                    
+                    <!-- Show Admin Panel link only for leaders -->
+                    <?php if ($member_role === 'leader'): ?>
+                        <a href="/admin-approvals.php"><i class="fa-solid fa-user-check"></i> Admin Panel</a>
+                    <?php endif; ?>
+                    
+                    <a href="/faq.php"><i class="fa-regular fa-circle-question"></i> FAQ</a>
                     <button id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
                 <?php else: ?>
                     <a href="login.php?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>">
