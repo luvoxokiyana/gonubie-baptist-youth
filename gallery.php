@@ -1,5 +1,5 @@
 <?php
-//session_start(); included in header.php
+session_start(); 
 $is_logged_in = isset($_SESSION['member_id']);
 ?>
 <!DOCTYPE html>
