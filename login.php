@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Youth Login - Gonubie Baptist Youth</title>
-    <link rel="stylesheet" href="css/main.css?v=1.0">
+    <link rel="stylesheet" href="css/main.css?v=3.0">
     <style>
         .login-container {
             max-width: 400px;
@@ -84,17 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-    <div class="header">
-        <div class="left-container"><span><i class="fa-solid fa-cross"></i> Gonubie Baptist Youth</span></div>
-        <div class="middle-container">
-            <a href="index.html">home</a>
-            <a href="past-lessons.php">past lessons</a>
-            <a href="bible-verse.php">bible verse</a>
-            <a href="voting.php">voting</a>
-            <a href="gallery.php">gallery</a>
-        </div>
-        <div class="right-container"><i class="fa-solid fa-circle-user"></i></div>
-    </div>
+    <?php include __DIR__ . '/inc/header.php'; ?>
 
     <div class="login-container">
         <h2>🔒 Youth Member Login</h2>
