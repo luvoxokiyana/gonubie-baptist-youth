@@ -5,6 +5,7 @@ $is_logged_in = isset($_SESSION['member_id']);
 $member_name = $_SESSION['member_name'] ?? '';
 $member_role = $_SESSION['member_role'] ?? '';
 ?>
+<!--Hello World-->
 <div class="header">
     <div class="left-container">
         <span>
@@ -37,7 +38,7 @@ $member_role = $_SESSION['member_role'] ?? '';
                         <a href="/admin-approvals.php"><i class="fa-solid fa-user-check"></i> Admin Panel</a>
                     <?php endif; ?>
                     
-                    <a href="/FAQ.php"><i class="fa-regular fa-circle-question"></i> FAQ</a>
+                    <a href="/faq.php"><i class="fa-regular fa-circle-question"></i> FAQ</a>
                     <button id="logoutBtn"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
                 <?php else: ?>
                     <a href="login.php?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>">
@@ -50,14 +51,24 @@ $member_role = $_SESSION['member_role'] ?? '';
 </div>
 
 <script>
-// Profile dropdown functionality
+// Profile dropdown functionality - with mobile touch support
 document.addEventListener('DOMContentLoaded', function() {
     const dropdown = document.getElementById('profileDropdown');
     const trigger = document.querySelector('.dropdown-trigger');
     const body = document.body;
     
-    if (trigger && dropdown) {
+    // Make the trigger area larger and more touch-friendly
+    if (trigger) {
+        // Add a larger tap area
+        trigger.style.minWidth = '44px';
+        trigger.style.minHeight = '44px';
+        trigger.style.display = 'flex';
+        trigger.style.alignItems = 'center';
+        trigger.style.justifyContent = 'center';
+        
+        // Handle both click and touch events
         trigger.addEventListener('click', function(e) {
+            e.preventDefault();
             e.stopPropagation();
             dropdown.classList.toggle('active');
             if (dropdown.classList.contains('active')) {
@@ -67,24 +78,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        document.addEventListener('click', function(e) {
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove('active');
+        // Also handle touchstart for better mobile response
+        trigger.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
+            if (dropdown.classList.contains('active')) {
+                body.classList.add('dropdown-open');
+            } else {
                 body.classList.remove('dropdown-open');
             }
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && dropdown.classList.contains('active')) {
-                dropdown.classList.remove('active');
-                body.classList.remove('dropdown-open');
-            }
-        });
+        }, { passive: false });
     }
+    
+    // Close dropdown when clicking/tapping outside
+    document.addEventListener('click', function(e) {
+        if (dropdown && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+            body.classList.remove('dropdown-open');
+        }
+    });
+    
+    document.addEventListener('touchstart', function(e) {
+        if (dropdown && !dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+            body.classList.remove('dropdown-open');
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && dropdown && dropdown.classList.contains('active')) {
+            dropdown.classList.remove('active');
+            body.classList.remove('dropdown-open');
+        }
+    });
     
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
+            window.location.href = 'logout.php';
+        });
+        logoutBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
             window.location.href = 'logout.php';
         });
     }
