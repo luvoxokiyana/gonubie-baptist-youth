@@ -246,50 +246,6 @@ body {
     cursor: pointer;
 }
 
-/* Make dropdown menu easier to tap on mobile */
-@media (max-width: 768px) {
-    .dropdown-menu a,
-    .dropdown-menu button {
-        padding: 12px 16px;
-        font-size: 16px;
-    }
-    
-    .dropdown-trigger i {
-        font-size: 1.8rem;
-    }
-}
-
-/* Mobile dropdown adjustment */
-@media (max-width: 768px) {
-    .dropdown-menu {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        border-radius: 20px 20px 0 0;
-        transform: translateY(100%);
-    }
-    
-    .profile-dropdown.active .dropdown-menu {
-        transform: translateY(0);
-    }
-    
-    /* Dark overlay when dropdown is open on mobile */
-    body.dropdown-open::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-}
-
-/* Responsive header */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
@@ -304,5 +260,54 @@ body {
     
     .footer-content {
         flex-direction: column;
+    }
+    
+    /* Dropdown menu - appears below icon, not at bottom */
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        bottom: auto;
+        left: auto;
+        right: 0;
+        width: 200px;
+        border-radius: 12px;
+        transform: none;
+        margin-top: 0.5rem;
+    }
+    
+    /* Larger tap target for profile icon */
+    .dropdown-trigger {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .dropdown-trigger i {
+        font-size: 1.5rem;
+    }
+    
+    /* Easier to tap menu items */
+    .dropdown-menu a,
+    .dropdown-menu button {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    
+    /* Overlay when dropdown is open */
+    body.dropdown-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+    
+    .profile-dropdown.active .dropdown-menu {
+        z-index: 999;
     }
 }
